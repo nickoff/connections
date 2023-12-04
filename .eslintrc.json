@@ -1,0 +1,88 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "unused-imports",
+    "simple-import-sort"
+  ],
+  "parserOptions": {
+    "project": "tsconfig.(app|spec).json"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.module.ts",
+        "*.model.ts"
+      ],
+      "extends": [
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        // ESLint rules
+        "import/prefer-default-export": "off",
+        "import/first": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error",
+        "max-len": [
+          "error",
+          120
+      ],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+
+        // eslint-plugin-unused-imports rules
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+            "warn",
+            { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+        ],
+        // TypeScript Eslint rules
+        "@typescript-eslint/indent": [
+          "error",
+          2
+      ],
+        "quotes": "off",
+        "@typescript-eslint/quotes": "error",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/explicit-function-return-type": "warn",
+        // Angular ESLint rules
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility"
+      ],
+      "rules": {}
+    }
+  ]
+}
