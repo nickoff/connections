@@ -1,13 +1,24 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
-  "plugins": ["prettier", "@typescript-eslint", "unused-imports", "simple-import-sort"],
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "plugins": [
+    "prettier",
+    "@typescript-eslint",
+    "unused-imports",
+    "simple-import-sort"
+  ],
   "parserOptions": {
     "project": "tsconfig.(app|spec).json"
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.module.ts", "*.model.ts"],
+      "files": [
+        "*.ts",
+        "*.module.ts",
+        "*.model.ts"
+      ],
       "extends": [
         "airbnb-base",
         "airbnb-typescript/base",
@@ -18,15 +29,16 @@
         "prettier"
       ],
       "rules": {
-        // ESLint rules
         "import/prefer-default-export": "off",
         "import/first": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
-        "max-len": ["error", 120],
+        "max-len": [
+          "error",
+          120
+        ],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
-        // eslint-plugin-unused-imports rules
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "warn",
@@ -37,17 +49,17 @@
             "argsIgnorePattern": "^_"
           }
         ],
-        // Prettier rules
         "prettier/prettier": "error",
-        // TypeScript Eslint rules
-        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/indent": [
+          "error",
+          2
+        ],
         "quotes": "off",
         "@typescript-eslint/quotes": "error",
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/explicit-function-return-type": "warn",
-        // Angular ESLint rules
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -67,9 +79,22 @@
       }
     },
     {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:@angular-eslint/template/accessibility"],
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility"
+      ],
       "rules": {}
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/strict-requiring-type-checking"
+      ]
     }
   ]
 }
