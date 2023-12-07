@@ -1,0 +1,9 @@
+@import '../styles/index.scss';
+
+  :host.dark-theme {
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    @include background-pattern-dark;
+  }

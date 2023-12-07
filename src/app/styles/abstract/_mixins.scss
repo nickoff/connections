@@ -1,0 +1,7 @@
+@import 'variables';
+
+@mixin background-pattern-dark {
+  background-color: $bg-color;
+  background-image: url("../../../assets/image/background_pattern_ligth.svg");
+  background-size: 5%;
+}
