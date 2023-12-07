@@ -1,1 +1,19 @@
-<p>signup works!</p>
+<div class="signup">
+  <app-logo></app-logo>
+  <form class="signup__form">
+    <div class="form__input-label">
+      <label for="email">Email address<span>*</span></label>
+    </div>
+    <input type="text" id="email">
+    <div class="form__input-label">
+      <label for="name">Name<span>*</span></label>
+    </div>
+    <input type="text" id="name">
+    <div class="form__input-label">
+      <label for="password">Password<span>*</span></label>
+    </div>
+    <input type="password" id="password">
+    <button>Sign up</button>
+  </form>
+  <p class="signup__text">Already have an account? <a routerLink="/signin">Sign in</a></p>
+</div>
