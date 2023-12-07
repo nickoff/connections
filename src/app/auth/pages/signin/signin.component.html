@@ -1,1 +1,15 @@
-<p>signin works!</p>
+<div class="signin">
+  <app-logo></app-logo>
+  <form class="signin__form">
+    <div class="form__input-label">
+      <label for="email">User's Email address<span>*</span></label>
+    </div>
+    <input type="text" id="email">
+    <div class="form__input-label">
+      <label for="password">User's password<span>*</span></label>
+    </div>
+    <input type="password" id="password">
+    <button>Sign in</button>
+  </form>
+  <p class="signin__text">Don't have an account? <a routerLink="signup">Sign up</a></p>
+</div>
