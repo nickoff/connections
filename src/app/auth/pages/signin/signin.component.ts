@@ -19,7 +19,7 @@ import { SigninModel } from '../../models';
 })
 export class SigninComponent implements OnInit {
   isSubmitted = false;
-  isButtonDisabled = false;
+  isButtonDisabled = true;
 
   credentails: FormGroup<SigninModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
@@ -45,17 +45,17 @@ export class SigninComponent implements OnInit {
   ngOnInit(): void {
     this.credentails.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.refreshErrorsState();
+      this.credentails.valid ? (this.isButtonDisabled = false) : (this.isButtonDisabled = true);
       this.cdr.markForCheck();
     });
   }
 
   onSubmit(): void {
     this.isSubmitted = true;
+    this.refreshErrorsState();
 
     if (!this.credentails.valid) return;
     this.isButtonDisabled = true;
-
-    this.refreshErrorsState();
   }
 
   private getShowEmailError(): boolean {
