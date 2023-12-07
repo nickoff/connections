@@ -17,6 +17,7 @@
   background-color: $surface-color;
   border-radius: 5px;
   color: $text-color-secondary;
+  box-shadow: 2px 2px 4px 0px #00000040;
 
   &__form {
     display: flex;

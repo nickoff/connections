@@ -1,15 +1,17 @@
 <div class="signin">
   <app-logo></app-logo>
-  <form class="signin__form">
+  <form [formGroup]="credentails" (ngSubmit)="onSubmit()" class="signin__form">
     <div class="form__input-label">
-      <label for="email">User's Email address<span>*</span></label>
+      <label for="email">User's Email address<span *ngIf="!isShowEmailError">*</span></label>
+      <span class="signin__form-error" *ngIf="isShowEmailError">{{" - " + emailErrors}}</span>
     </div>
-    <input type="text" id="email">
+    <input formControlName="email" type="email" id="email">
     <div class="form__input-label">
-      <label for="password">User's password<span>*</span></label>
+      <label for="password">User's password<span *ngIf="!isShowPasswordError">*</span></label>
+      <span class="signin__form-error" *ngIf="isShowPasswordError">{{" - " + passwordErrors}}</span>
     </div>
-    <input type="password" id="password">
-    <button>Sign in</button>
+    <input formControlName="password" type="password" id="password">
+    <button [disabled]="isButtonDisabled">Sign in</button>
   </form>
   <p class="signin__text">Don't have an account? <a routerLink="/signup">Sign up</a></p>
 </div>
