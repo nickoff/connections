@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
@@ -24,6 +25,7 @@ import { SigninModel } from '../../models';
 export class SigninComponent implements OnInit {
   isSubmitted = false;
   isButtonDisabled = true;
+  isLoading = false;
 
   credentails: FormGroup<SigninModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
@@ -45,7 +47,8 @@ export class SigninComponent implements OnInit {
     private destroyRef: DestroyRef,
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
-    private navigate: NavigateService
+    private navigate: NavigateService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -117,22 +120,28 @@ export class SigninComponent implements OnInit {
   }
 
   private signin(credentails: LoginRequestModel): void {
+    this.isLoading = true;
     this.apiService
       .fetchAuthData(credentails)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response: LoginResponseModel) => {
+          this.isLoading = false;
           (Object.keys(response) as Array<keyof LoginResponseModel>).forEach((key) => {
             localStorage.setItem(key, response[key]);
           });
           localStorage.setItem('email', credentails.email);
+          this.snackBar.open(`Welcome! We are glad to see you ${credentails.email}`, '', {
+            duration: 5000,
+            verticalPosition: 'top'
+          });
           this.navigate.navigateToRoot();
           this.cdr.markForCheck();
         },
         error: (error: LoginException) => {
           this.isButtonDisabled = false;
-          // eslint-disable-next-line no-console
-          console.log(error);
+          this.isLoading = false;
+          this.snackBar.open(error.message, '', { duration: 5000, verticalPosition: 'top' });
           this.cdr.markForCheck();
         }
       });
