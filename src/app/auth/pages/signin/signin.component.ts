@@ -3,7 +3,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnIn
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ApiService } from 'src/app/core/services/api/api.service';
+import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
+import { LoginException } from 'src/app/shared/constants/login-exceptions';
+import { LoginRequestModel, LoginResponseModel } from 'src/app/shared/models/login.model';
 
 import { ERROR_EMAIL_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
 import { AuthEmailErrors, AuthPasswordErrors } from '../../enums';
@@ -15,7 +19,7 @@ import { SigninModel } from '../../models';
   imports: [LogoComponent, RouterLink, ReactiveFormsModule, NgIf],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SigninComponent implements OnInit {
   isSubmitted = false;
@@ -23,7 +27,7 @@ export class SigninComponent implements OnInit {
 
   credentails: FormGroup<SigninModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] })
   });
 
   password = this.credentails.controls.password;
@@ -40,6 +44,8 @@ export class SigninComponent implements OnInit {
   constructor(
     private destroyRef: DestroyRef,
     private cdr: ChangeDetectorRef,
+    private apiService: ApiService,
+    private navigate: NavigateService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +62,7 @@ export class SigninComponent implements OnInit {
 
     if (!this.credentails.valid) return;
     this.isButtonDisabled = true;
+    this.signin(this.credentails.value as LoginRequestModel);
   }
 
   private getShowEmailError(): boolean {
@@ -107,5 +114,27 @@ export class SigninComponent implements OnInit {
     this.passwordErrors = this.getPasswordErrors();
     this.isShowNonRequiredPasswordErrors = this.getShowNonRequiredPasswordErrors();
     this.nonRequiredPasswordError = this.getNonRequiredPasswordError();
+  }
+
+  private signin(credentails: LoginRequestModel): void {
+    this.apiService
+      .fetchAuthData(credentails)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: LoginResponseModel) => {
+          (Object.keys(response) as Array<keyof LoginResponseModel>).forEach((key) => {
+            localStorage.setItem(key, response[key]);
+          });
+          localStorage.setItem('email', credentails.email);
+          this.navigate.navigateToRoot();
+          this.cdr.markForCheck();
+        },
+        error: (error: LoginException) => {
+          this.isButtonDisabled = false;
+          // eslint-disable-next-line no-console
+          console.log(error);
+          this.cdr.markForCheck();
+        }
+      });
   }
 }

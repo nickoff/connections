@@ -6,6 +6,6 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
   standalone: true,
   imports: [LogoComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrl: './header.component.scss'
 })
 export class HeaderComponent {}

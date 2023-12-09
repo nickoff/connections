@@ -1,2 +1,2 @@
-export * from './validate.enum';
 export * from './auth-state.model';
+export * from './validate.enum';

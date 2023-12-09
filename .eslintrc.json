@@ -50,10 +50,7 @@
           }
         ],
         "prettier/prettier": "error",
-        "@typescript-eslint/indent": [
-          "error",
-          2
-        ],
+        "@typescript-eslint/indent": "off",
         "quotes": "off",
         "@typescript-eslint/quotes": "error",
         "no-shadow": "off",

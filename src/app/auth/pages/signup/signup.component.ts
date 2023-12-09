@@ -7,6 +7,6 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
   standalone: true,
   imports: [LogoComponent, RouterLink],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss',
+  styleUrl: './signup.component.scss'
 })
 export class SignupComponent {}

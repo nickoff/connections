@@ -9,12 +9,12 @@ import { LOGO_ICON } from '../constants/logo';
   standalone: true,
   imports: [MatIconModule],
   templateUrl: './logo.component.html',
-  styleUrl: './logo.component.scss',
+  styleUrl: './logo.component.scss'
 })
 export class LogoComponent {
   constructor(
     private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {
     this.iconRegistry.addSvgIconLiteral('logo-icon', sanitizer.bypassSecurityTrustHtml(LOGO_ICON));
   }

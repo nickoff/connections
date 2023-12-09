@@ -16,7 +16,7 @@ export function validatePasswordStrength(): ValidatorFn {
       { test: VALIDATION_REGEXP.symbolRequired.test(value), error: AuthErrors.symbolRequired },
       { test: VALIDATION_REGEXP.upperCaseRequired.test(value), error: AuthErrors.upperCaseRequired },
       { test: VALIDATION_REGEXP.numericRequired.test(value), error: AuthErrors.numericRequired },
-      { test: value.length > minLengthPassword, error: AuthErrors.lengthRequired },
+      { test: value.length > minLengthPassword, error: AuthErrors.lengthRequired }
     ];
 
     conditions.forEach((condition) => {

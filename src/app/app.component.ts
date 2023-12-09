@@ -8,7 +8,7 @@ import { CoreComponent } from './core/core.component';
   standalone: true,
   imports: [CommonModule, CoreComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'connections';

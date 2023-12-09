@@ -12,21 +12,22 @@ export const routes: Routes = [
     children: [
       {
         path: 'profile',
-        loadChildren: () => import('./core/pages/profile/profile.routes').then((m) => m.routes),
-      },
+        loadChildren: () => import('./core/pages/profile/profile.routes').then((m) => m.routes)
+      }
     ],
     canActivate: [authGuard],
+    pathMatch: 'full'
   },
   {
     path: 'signin',
-    component: SigninComponent,
+    component: SigninComponent
   },
   {
     path: 'signup',
-    loadComponent: () => import('./auth/pages/signup/signup.component').then((m) => m.SignupComponent),
+    loadComponent: () => import('./auth/pages/signup/signup.component').then((m) => m.SignupComponent)
   },
   {
     path: '**',
-    component: NotFoundComponent,
-  },
+    component: NotFoundComponent
+  }
 ];

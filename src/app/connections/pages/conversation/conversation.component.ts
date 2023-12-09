@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './conversation.component.html',
-  styleUrl: './conversation.component.scss',
+  styleUrl: './conversation.component.scss'
 })
 export class ConversationComponent {}

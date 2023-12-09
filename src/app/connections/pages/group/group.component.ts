@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './group.component.html',
-  styleUrl: './group.component.scss',
+  styleUrl: './group.component.scss'
 })
 export class GroupComponent {}

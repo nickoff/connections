@@ -2,15 +2,15 @@ export enum AuthErrors {
   symbolRequired = 'symbolRequired',
   upperCaseRequired = 'upperCaseRequired',
   numericRequired = 'numericRequired',
-  lengthRequired = 'lengthRequired',
+  lengthRequired = 'lengthRequired'
 }
 
 export enum AuthEmailErrors {
   required = 'required',
-  invalidEmail = 'email',
+  invalidEmail = 'email'
 }
 
 export enum AuthPasswordErrors {
   required = 'required',
-  invalidPassword = 'validatePasswordStrength',
+  invalidPassword = 'validatePasswordStrength'
 }
