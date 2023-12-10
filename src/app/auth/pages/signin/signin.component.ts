@@ -8,8 +8,8 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
-import { LoginException } from 'src/app/shared/constants/login-exceptions';
-import { LoginRequestModel, LoginResponseModel } from 'src/app/shared/models/login.model';
+import { SigninException } from 'src/app/shared/constants/signin-exceptions';
+import { SigninRequestModel, SigninResponseModel } from 'src/app/shared/models/signin.model';
 
 import { ERROR_EMAIL_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
 import { AuthEmailErrors, AuthPasswordErrors } from '../../enums';
@@ -71,7 +71,7 @@ export class SigninComponent implements OnInit {
 
     if (!this.credentails.valid) return;
     this.isButtonDisabled = true;
-    this.signIn(this.credentails.value as LoginRequestModel);
+    this.signIn(this.credentails.value as SigninRequestModel);
   }
 
   private getShowEmailError(): boolean {
@@ -123,15 +123,15 @@ export class SigninComponent implements OnInit {
     this.passwordErrors = this.getPasswordErrors();
   }
 
-  private signIn(credentails: LoginRequestModel): void {
+  private signIn(credentails: SigninRequestModel): void {
     this.isLoading = true;
     this.apiService
       .fetchAuthData(credentails)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response: LoginResponseModel) => {
+        next: (response: SigninResponseModel) => {
           this.isLoading = false;
-          (Object.keys(response) as Array<keyof LoginResponseModel>).forEach((key) => {
+          (Object.keys(response) as Array<keyof SigninResponseModel>).forEach((key) => {
             localStorage.setItem(key, response[key]);
           });
           localStorage.setItem('email', credentails.email);
@@ -148,7 +148,7 @@ export class SigninComponent implements OnInit {
             });
           this.cdr.markForCheck();
         },
-        error: (error: LoginException) => {
+        error: (error: SigninException) => {
           this.isButtonDisabled = false;
           this.isLoading = false;
           this.snackBar.open(`❌ ERROR: ${error.message} ❌`, '', { duration: 5000, verticalPosition: 'top' });

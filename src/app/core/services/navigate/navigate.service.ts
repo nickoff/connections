@@ -10,4 +10,8 @@ export class NavigateService {
   navigateToRoot(): void {
     this.router.navigate(['']);
   }
+
+  navigateToSignin(): void {
+    this.router.navigate(['signin']);
+  }
 }

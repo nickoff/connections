@@ -8,6 +8,8 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
+import { SignupException } from 'src/app/shared/constants/signup-exceptions';
+import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 
 import { ERROR_EMAIL_MESSAGE, ERROR_NAME_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
 import { AuthEmailErrors, AuthNameErrors, AuthPasswordErrors } from '../../enums';
@@ -78,7 +80,7 @@ export class SignupComponent implements OnInit {
 
     if (!this.registrationCredentails.valid) return;
     this.isButtonDisabled = true;
-    // this.signIn(this.registrationCredentails.value as LoginRequestModel);
+    this.signIn(this.registrationCredentails.value as SignupRequestModel);
   }
 
   private getShowEmailError(): boolean {
@@ -145,5 +147,39 @@ export class SignupComponent implements OnInit {
     this.passwordErrors = this.getPasswordErrors();
     this.isShowNonRequiredPasswordErrors = this.getShowNonRequiredPasswordErrors();
     this.nonRequiredPasswordError = this.getNonRequiredPasswordError();
+  }
+
+  private signIn(registrationCredentails: SignupRequestModel): void {
+    this.isLoading = true;
+    this.apiService
+      .fetchRegistration(registrationCredentails)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          const snackBarRef = this.snackBar.open(
+            `✅ OK! ${registrationCredentails.name} successfully registered! ✅`,
+            '',
+            {
+              duration: 3000,
+              verticalPosition: 'top'
+            }
+          );
+          snackBarRef
+            .afterDismissed()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+              this.navigate.navigateToSignin();
+              this.cdr.markForCheck();
+            });
+          this.cdr.markForCheck();
+        },
+        error: (error: SignupException) => {
+          this.isButtonDisabled = false;
+          this.isLoading = false;
+          this.snackBar.open(`❌ ERROR: ${error.message} ❌`, '', { duration: 5000, verticalPosition: 'top' });
+          this.cdr.markForCheck();
+        }
+      });
   }
 }
