@@ -14,3 +14,9 @@ export enum AuthPasswordErrors {
   required = 'required',
   invalidPassword = 'validatePasswordStrength'
 }
+
+export enum AuthNameErrors {
+  required = 'required',
+  onlyLettersOrSpaces = 'onlyLettersOrSpaces',
+  maxLengthName = 'maxLengthName'
+}

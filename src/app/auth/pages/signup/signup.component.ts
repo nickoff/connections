@@ -9,9 +9,10 @@ import { ApiService } from 'src/app/core/services/api/api.service';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
 
-import { ERROR_EMAIL_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
-import { AuthEmailErrors, AuthPasswordErrors } from '../../enums';
+import { ERROR_EMAIL_MESSAGE, ERROR_NAME_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
+import { AuthEmailErrors, AuthNameErrors, AuthPasswordErrors } from '../../enums';
 import { SignupModel } from '../../models';
+import { validateName } from '../../services/validate-name.service';
 import { validatePasswordStrength } from '../../services/validate-password.service';
 
 @Component({
@@ -37,7 +38,7 @@ export class SignupComponent implements OnInit {
 
   registrationCredentails: FormGroup<SignupModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required, validateName()] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, validatePasswordStrength()] })
   });
 
@@ -92,6 +93,19 @@ export class SignupComponent implements OnInit {
     );
   }
 
+  private getShowNameError(): boolean {
+    return this.name.errors !== null && this.name.errors && (this.name.dirty || this.isSubmitted);
+  }
+
+  private getNameErrors(): string {
+    return (
+      this.name.errors !== null &&
+      ((this.name.errors[AuthNameErrors.onlyLettersOrSpaces] && ERROR_NAME_MESSAGE.onlyLettersOrSpaces) ||
+        (this.name.errors[AuthNameErrors.required] && ERROR_NAME_MESSAGE.required) ||
+        (this.name.errors[AuthNameErrors.maxLengthName] && ERROR_NAME_MESSAGE.maxLengthName))
+    );
+  }
+
   private getShowPasswordError(): boolean {
     return this.password.errors !== null && this.password.errors && (this.password.dirty || this.isSubmitted);
   }
@@ -125,6 +139,8 @@ export class SignupComponent implements OnInit {
     this.errorKeys = this.getPasswordErrorKeys();
     this.isShowEmailError = this.getShowEmailError();
     this.emailErrors = this.getEmailErrors();
+    this.isShowNameError = this.getShowNameError();
+    this.nameErrors = this.getNameErrors();
     this.isShowPasswordError = this.getShowPasswordError();
     this.passwordErrors = this.getPasswordErrors();
     this.isShowNonRequiredPasswordErrors = this.getShowNonRequiredPasswordErrors();

@@ -1,9 +1,10 @@
-import { AuthEmailErrors, AuthErrors, AuthPasswordErrors } from '../enums';
+import { AuthEmailErrors, AuthErrors, AuthNameErrors, AuthPasswordErrors } from '../enums';
 
 const VALIDATION_REGEXP = {
   [AuthErrors.symbolRequired]: /[@!#?]+/,
   [AuthErrors.upperCaseRequired]: /[A-Z]+/,
-  [AuthErrors.numericRequired]: /[0-9]+/
+  [AuthErrors.numericRequired]: /[0-9]+/,
+  [AuthNameErrors.onlyLettersOrSpaces]: /^[A-Za-z\s]+$/
 };
 
 const ERRORS_MESSAGES = {
@@ -23,4 +24,10 @@ const ERROR_PASSWORD_MESSAGE = {
   [AuthPasswordErrors.invalidPassword]: "Your password isn't strong enough"
 };
 
-export { ERROR_EMAIL_MESSAGE, ERROR_PASSWORD_MESSAGE, ERRORS_MESSAGES, VALIDATION_REGEXP };
+const ERROR_NAME_MESSAGE = {
+  [AuthNameErrors.required]: 'Please enter a name',
+  [AuthNameErrors.onlyLettersOrSpaces]: 'Your name allowed only letters or spaces',
+  [AuthNameErrors.maxLengthName]: 'Your name is too long'
+};
+
+export { ERROR_EMAIL_MESSAGE, ERROR_NAME_MESSAGE, ERROR_PASSWORD_MESSAGE, ERRORS_MESSAGES, VALIDATION_REGEXP };
