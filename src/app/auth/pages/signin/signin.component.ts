@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -20,6 +21,13 @@ import { SigninModel } from '../../models';
   imports: [LogoComponent, RouterLink, ReactiveFormsModule, NgIf],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
+  animations: [
+    trigger('fade', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0 }), animate(500)]),
+      transition(':leave', animate(500, style({ opacity: 0 })))
+    ])
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SigninComponent implements OnInit {
@@ -38,10 +46,8 @@ export class SigninComponent implements OnInit {
   errorKeys?: string[];
   isShowEmailError = false;
   isShowPasswordError = false;
-  isShowNonRequiredPasswordErrors = false;
   emailErrors?: string;
   passwordErrors?: string;
-  nonRequiredPasswordError?: ValidationErrors;
 
   constructor(
     private destroyRef: DestroyRef,
@@ -115,8 +121,6 @@ export class SigninComponent implements OnInit {
     this.emailErrors = this.getEmailErrors();
     this.isShowPasswordError = this.getShowPasswordError();
     this.passwordErrors = this.getPasswordErrors();
-    this.isShowNonRequiredPasswordErrors = this.getShowNonRequiredPasswordErrors();
-    this.nonRequiredPasswordError = this.getNonRequiredPasswordError();
   }
 
   private signIn(credentails: LoginRequestModel): void {
@@ -131,7 +135,7 @@ export class SigninComponent implements OnInit {
             localStorage.setItem(key, response[key]);
           });
           localStorage.setItem('email', credentails.email);
-          const snackBarRef = this.snackBar.open(`Welcome! We are glad to see you ${credentails.email}`, '', {
+          const snackBarRef = this.snackBar.open(`✅ OK! We are glad to see you ${credentails.email} ✅`, '', {
             duration: 3000,
             verticalPosition: 'top'
           });
@@ -147,7 +151,7 @@ export class SigninComponent implements OnInit {
         error: (error: LoginException) => {
           this.isButtonDisabled = false;
           this.isLoading = false;
-          this.snackBar.open(error.message, '', { duration: 5000, verticalPosition: 'top' });
+          this.snackBar.open(`❌ ERROR: ${error.message} ❌`, '', { duration: 5000, verticalPosition: 'top' });
           this.cdr.markForCheck();
         }
       });

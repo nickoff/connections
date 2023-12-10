@@ -1,19 +1,25 @@
 <div class="signup">
   <app-logo></app-logo>
-  <form class="signup__form">
+  <form [formGroup]="registrationCredentails" (ngSubmit)="onSubmit()" class="signup__form">
     <div class="form__input-label">
-      <label for="email">Email address<span>*</span></label>
+      <label for="email">Email address<span *ngIf="!isShowEmailError">*</span></label>
+      <span @fade class="signup__form-error" *ngIf="isShowEmailError">{{" - " + emailErrors}}</span>
     </div>
-    <input type="text" id="email">
+    <input formControlName="email" type="email" id="email">
     <div class="form__input-label">
-      <label for="name">Name<span>*</span></label>
+      <label for="name">Name<span *ngIf="!isShowNameError">*</span></label>
+      <span @fade class="signup__form-error" *ngIf="isShowNameError">{{" - " + nameErrors}}</span>
     </div>
-    <input type="text" id="name">
+    <input formControlName="name" type="text" id="name">
     <div class="form__input-label">
-      <label for="password">Password<span>*</span></label>
+      <label for="password">Password<span *ngIf="!isShowPasswordError">*</span></label>
+      <span @fade class="signup__form-error" *ngIf="isShowPasswordError">{{" - " + passwordErrors}}</span>
     </div>
-    <input type="password" id="password">
-    <button>Sign up</button>
+    <input formControlName="password" type="password" id="password">
+    <button [disabled]="isButtonDisabled">{{isLoading ? 'Loading...' : 'Sign up'}}</button>
+    <ul @fade class="signup__form-error" *ngIf="isShowNonRequiredPasswordErrors">
+      <li *ngFor="let errorKey of errorKeys">{{nonRequiredPasswordError?.[errorKey]}}</li>
+    </ul>
   </form>
   <p class="signup__text">Already have an account? <a routerLink="/signin">Sign in</a></p>
 </div>

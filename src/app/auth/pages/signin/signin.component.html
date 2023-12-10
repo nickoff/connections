@@ -3,12 +3,12 @@
   <form [formGroup]="credentails" (ngSubmit)="onSubmit()" class="signin__form">
     <div class="form__input-label">
       <label for="email">User's Email address<span *ngIf="!isShowEmailError">*</span></label>
-      <span class="signin__form-error" *ngIf="isShowEmailError">{{" - " + emailErrors}}</span>
+      <span @fade class="signin__form-error" *ngIf="isShowEmailError">{{" - " + emailErrors}}</span>
     </div>
     <input formControlName="email" type="email" id="email">
     <div class="form__input-label">
       <label for="password">User's password<span *ngIf="!isShowPasswordError">*</span></label>
-      <span class="signin__form-error" *ngIf="isShowPasswordError">{{" - " + passwordErrors}}</span>
+      <span @fade class="signin__form-error" *ngIf="isShowPasswordError">{{" - " + passwordErrors}}</span>
     </div>
     <input formControlName="password" type="password" id="password">
     <button [disabled]="isButtonDisabled">{{isLoading ? 'Loading...' : 'Sign in'}}</button>
