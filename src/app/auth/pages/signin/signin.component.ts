@@ -65,7 +65,7 @@ export class SigninComponent implements OnInit {
 
     if (!this.credentails.valid) return;
     this.isButtonDisabled = true;
-    this.signin(this.credentails.value as LoginRequestModel);
+    this.signIn(this.credentails.value as LoginRequestModel);
   }
 
   private getShowEmailError(): boolean {
@@ -119,7 +119,7 @@ export class SigninComponent implements OnInit {
     this.nonRequiredPasswordError = this.getNonRequiredPasswordError();
   }
 
-  private signin(credentails: LoginRequestModel): void {
+  private signIn(credentails: LoginRequestModel): void {
     this.isLoading = true;
     this.apiService
       .fetchAuthData(credentails)
@@ -131,11 +131,17 @@ export class SigninComponent implements OnInit {
             localStorage.setItem(key, response[key]);
           });
           localStorage.setItem('email', credentails.email);
-          this.snackBar.open(`Welcome! We are glad to see you ${credentails.email}`, '', {
-            duration: 5000,
+          const snackBarRef = this.snackBar.open(`Welcome! We are glad to see you ${credentails.email}`, '', {
+            duration: 3000,
             verticalPosition: 'top'
           });
-          this.navigate.navigateToRoot();
+          snackBarRef
+            .afterDismissed()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+              this.navigate.navigateToRoot();
+              this.cdr.markForCheck();
+            });
           this.cdr.markForCheck();
         },
         error: (error: LoginException) => {
