@@ -8,13 +8,14 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 import { apiInterceptor } from './core/interceptors/api.interceptor';
+import { metaReducers, reducers } from './store/root-reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptors([apiInterceptor])),
     provideRouter(routes),
     provideAnimations(),
-    provideStore(),
+    provideStore(reducers, { metaReducers }),
     provideEffects(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
   ]
