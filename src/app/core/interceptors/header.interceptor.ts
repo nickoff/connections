@@ -1,19 +1,33 @@
-import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandlerFn,
+  HttpHeaders,
+  HttpInterceptorFn,
+  HttpRequest
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ServerException } from 'src/app/shared/constants/server-exceptions';
-import { environment } from 'src/environments/environment';
 
 import { ErrorSnackbarService } from '../services/snackbar/error-snackbar.service';
 
-export const apiInterceptor: HttpInterceptorFn = (
+export const headerInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
+  if (!localStorage.getItem('token')) return next(request);
+
+  const newHeader = new HttpHeaders({
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    'rs-email': `${localStorage.getItem('email')}`,
+    'rs-uid': `${localStorage.getItem('uid')}`
+  });
+
   const snackBar = inject(ErrorSnackbarService);
   return next(
     request.clone({
-      url: `${environment.API_URL}/${request.url}`
+      headers: newHeader
     })
   ).pipe(
     catchError((error: HttpErrorResponse) => {

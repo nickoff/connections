@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
-import { SigninException } from 'src/app/shared/constants/signin-exceptions';
 import { SigninRequestModel, SigninResponseModel } from 'src/app/shared/models/signin.model';
 
 import { ERROR_EMAIL_MESSAGE, ERROR_PASSWORD_MESSAGE } from '../../constants';
@@ -148,10 +147,9 @@ export class SigninComponent implements OnInit {
             });
           this.cdr.markForCheck();
         },
-        error: (error: SigninException) => {
+        error: () => {
           this.isButtonDisabled = false;
           this.isLoading = false;
-          this.snackBar.open(`❌ ERROR: ${error.message} ❌`, '', { duration: 5000, verticalPosition: 'top' });
           this.cdr.markForCheck();
         }
       });

@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import './app/styles/index.scss';
+
 * {
   box-sizing: border-box;
 }
@@ -6,4 +8,8 @@ html, body { height: 100vh;}
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #f44336;
 }

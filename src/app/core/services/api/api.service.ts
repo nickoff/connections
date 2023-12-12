@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { SignupException } from 'src/app/shared/constants/signup-exceptions';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
+import { UserModel } from 'src/app/shared/models/user.model';
 
 import { API_ENDPOINT } from '../../../shared/constants/api-endpoint';
-import { SigninException } from '../../../shared/constants/signin-exceptions';
+import { ServerException } from '../../../shared/constants/server-exceptions';
 import { SigninRequestModel, SigninResponseModel } from '../../../shared/models/signin.model';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ApiService {
   fetchAuthData(credentails: SigninRequestModel): Observable<SigninResponseModel> {
     return this.http.post<SigninResponseModel>(API_ENDPOINT.LOGIN, credentails).pipe(
       catchError((error: HttpErrorResponse) => {
-        const loginException: SigninException = error.error;
+        const loginException: ServerException = error.error;
         return throwError(() => loginException);
       })
     );
@@ -26,8 +26,17 @@ export class ApiService {
     return this.http.post(API_ENDPOINT.REGISTRATION, registrationCredentails).pipe(
       map(() => null),
       catchError((error: HttpErrorResponse) => {
-        const signupException: SignupException = error.error;
+        const signupException: ServerException = error.error;
         return throwError(() => signupException);
+      })
+    );
+  }
+
+  getProfileData(): Observable<UserModel> {
+    return this.http.get<UserModel>(API_ENDPOINT.PROFILE).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const profileException: ServerException = error.error;
+        return throwError(() => profileException);
       })
     );
   }
