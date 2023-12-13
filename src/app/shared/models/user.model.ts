@@ -4,3 +4,7 @@ export interface UserModel<T = { S: string }> {
   uid: T;
   createdAt: T;
 }
+
+export interface NewNameModel {
+  name: string;
+}

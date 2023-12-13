@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
-import { UserModel } from 'src/app/shared/models/user.model';
+import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
 
 import { API_ENDPOINT } from '../../../shared/constants/api-endpoint';
 import { ServerException } from '../../../shared/constants/server-exceptions';
@@ -34,6 +34,16 @@ export class ApiService {
 
   getProfileData(): Observable<UserModel> {
     return this.http.get<UserModel>(API_ENDPOINT.PROFILE).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const profileException: ServerException = error.error;
+        return throwError(() => profileException);
+      })
+    );
+  }
+
+  putProfileName(newName: NewNameModel): Observable<null> {
+    return this.http.put(API_ENDPOINT.PROFILE, newName).pipe(
+      map(() => null),
       catchError((error: HttpErrorResponse) => {
         const profileException: ServerException = error.error;
         return throwError(() => profileException);

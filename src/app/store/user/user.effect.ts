@@ -1,7 +1,8 @@
+/* eslint-disable no-return-assign */
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { filter, map, switchMap } from 'rxjs';
+import { filter, map, of, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OkSnackbarService } from 'src/app/core/services/snackbar/ok-snackbar.service';
 
@@ -29,6 +30,26 @@ export class UserEffect {
           })
         )
       )
+    );
+  });
+
+  updateUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(USER_ACTIONS.updateUser),
+      concatLatestFrom(() => this.store.select(selectUserValue)),
+      switchMap(([user, action]) => {
+        if (!action) return of({ type: 'NO_USER_ACTION' });
+        return this.apiService.putProfileName(user.newName).pipe(
+          map(() => {
+            const updatedUser = {
+              ...action,
+              name: { S: user.newName.name }
+            };
+            this.okSnackbar.openSnackbar('Profile updated');
+            return USER_ACTIONS.updateUserSuccess({ update: updatedUser });
+          })
+        );
+      })
     );
   });
 }
