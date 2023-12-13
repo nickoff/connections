@@ -21,9 +21,9 @@
       <input type="text" id="date" [readonly]="true" formControlName="createdAt">
     </div>
     <div class="profile__button-wrapper">
-      <button *ngIf="!isNameEditable" type="button" class="profile__button" (click)="editName()">Edit name</button>
-      <button *ngIf="isNameEditable" type="button" class="profile__button">Save</button>
-      <button *ngIf="isNameEditable" type="button" class="profile__button" (click)="editCancel()">Cancel</button>
+      <button *ngIf="!isNameEditable" [disabled]="isLoading" type="button" class="profile__button" (click)="editName()">{{isLoading ? 'Loading...' : 'Edit name'}}</button>
+      <button *ngIf="isNameEditable" [disabled]="isLoading" type="button" class="profile__button">{{isLoading ? 'Loading...' : 'Save'}}</button>
+      <button *ngIf="isNameEditable" [disabled]="isLoading" type="button" class="profile__button" (click)="editCancel()">{{isLoading ? 'Loading...' : 'Cancel'}}</button>
     </div>
   </form>
 </div>

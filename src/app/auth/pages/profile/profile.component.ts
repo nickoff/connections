@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
     private destroyRef: DestroyRef,
     private cdr: ChangeDetectorRef
   ) {
+    this.isLoading = true;
     this.store.dispatch(USER_ACTIONS.getUser());
   }
   ngOnInit(): void {
@@ -59,6 +60,10 @@ export class ProfileComponent implements OnInit {
   private setUserFromStore(): void {
     this.user$ = this.store.select(selectUserValue) as Observable<UserModel>;
     this.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((user) => {
+      if (user) {
+        this.isLoading = false;
+      }
+
       this.profileUser.setValue({
         email: user.email.S,
         uid: user.uid.S,
