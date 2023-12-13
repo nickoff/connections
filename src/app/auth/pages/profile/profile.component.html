@@ -22,8 +22,9 @@
     </div>
     <div class="profile__button-wrapper">
       <button *ngIf="!isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editName()">{{(isLoading$ | async) ? 'Loading...' : 'Edit name'}}</button>
-      <button *ngIf="isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editSave()">{{(isLoading$ | async) ? 'Loading...' : 'Save'}}</button>
+      <button *ngIf="isNameEditable" [disabled]="(isLoading$ | async ) || isButtonDisabled" type="button" class="profile__button" (click)="editSave()">{{(isLoading$ | async) ? 'Loading...' : 'Save'}}</button>
       <button *ngIf="isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editCancel()">{{(isLoading$ | async) ? 'Loading...' : 'Cancel'}}</button>
     </div>
+    <span class="profile__form-error" *ngIf="isShowNameError">{{nameErrors}}</span>
   </form>
 </div>
