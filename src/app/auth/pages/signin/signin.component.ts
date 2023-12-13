@@ -134,9 +134,10 @@ export class SigninComponent implements OnInit {
             localStorage.setItem(key, response[key]);
           });
           localStorage.setItem('email', credentails.email);
-          const snackBarRef = this.snackBar.open(`✅ OK! We are glad to see you ${credentails.email} ✅`, '', {
+          const snackBarRef = this.snackBar.open(`✔️ OK! We are glad to see you ${credentails.email} ✔️`, '', {
             duration: 3000,
-            verticalPosition: 'top'
+            verticalPosition: 'top',
+            panelClass: ['ok-snackbar']
           });
           snackBarRef
             .afterDismissed()

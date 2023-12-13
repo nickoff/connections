@@ -1,0 +1,29 @@
+<div class="profile">
+  <div class="profile__header">
+    <h1 class="profile__title">User profile</h1>
+    <button class="logout-button">Logout</button>
+  </div>
+  <form [formGroup]="profileUser" class="profile__form">
+    <div class="form__input-label">
+      <label for="name">Name:</label>
+      <input type="text" id="name" [readonly]="!isNameEditable" formControlName="name">
+    </div>
+    <div class="form__input-label">
+      <label for="email">Email:</label>
+      <input type="text" id="email" [readonly]="true" formControlName="email">
+    </div>
+    <div class="form__input-label">
+      <label for="uid">UID:</label>
+      <input type="text" id="uid" [readonly]="true" formControlName="uid">
+    </div>
+    <div class="form__input-label">
+      <label for="date">Created at:</label>
+      <input type="text" id="date" [readonly]="true" formControlName="createdAt">
+    </div>
+    <div class="profile__button-wrapper">
+      <button *ngIf="!isNameEditable" type="button" class="profile__button" (click)="editName()">Edit name</button>
+      <button *ngIf="isNameEditable" type="button" class="profile__button">Save</button>
+      <button *ngIf="isNameEditable" type="button" class="profile__button" (click)="editCancel()">Cancel</button>
+    </div>
+  </form>
+</div>

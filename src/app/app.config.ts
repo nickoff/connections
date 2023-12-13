@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideStore(reducers, { metaReducers }),
     provideEffects(effects),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    DatePipe
   ]
 };

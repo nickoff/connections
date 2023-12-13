@@ -8,15 +8,14 @@ import { NotFoundComponent } from './core/pages/not-found/not-found.component';
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [authGuard],
     component: MainComponent,
     children: [
       {
         path: 'profile',
-        loadChildren: () => import('./core/pages/profile/profile.routes').then((m) => m.routes)
+        loadChildren: () => import('./auth/pages/profile/profile.routes').then((m) => m.routes)
       }
-    ],
-    canActivate: [authGuard],
-    pathMatch: 'full'
+    ]
   },
   {
     path: 'signin',

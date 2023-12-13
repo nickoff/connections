@@ -157,11 +157,12 @@ export class SignupComponent implements OnInit {
         next: () => {
           this.isLoading = false;
           const snackBarRef = this.snackBar.open(
-            `✅ OK! ${registrationCredentails.name} successfully registered! ✅`,
+            `✔️ OK! ${registrationCredentails.name} successfully registered! ✔️`,
             '',
             {
               duration: 3000,
-              verticalPosition: 'top'
+              verticalPosition: 'top',
+              panelClass: ['ok-snackbar']
             }
           );
           snackBarRef
