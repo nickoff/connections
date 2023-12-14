@@ -2,7 +2,7 @@
   <div class="profile__header">
     <h1 class="profile__title">User profile</h1>
     <button [disabled]="isLoading$ | async" type="button" class="logout-button" (click)="logOut()">Logout</button>
-  </div>"
+  </div>
   <form [formGroup]="profileUser" class="profile__form">
     <div class="form__input-label">
       <label for="name">Name:</label>
