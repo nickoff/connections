@@ -10,3 +10,6 @@ export const getUserFail = createAction(USER_ACTION.GET_FAIL, props<{ error: Htt
 export const updateUser = createAction(USER_ACTION.UPDATE, props<{ newName: NewNameModel }>());
 export const updateUserSuccess = createAction(USER_ACTION.UPDATE_SUCCESS, props<{ update: UserModel }>());
 export const updateUserFail = createAction(USER_ACTION.UPDATE_FAIL, props<{ error: HttpErrorResponse }>());
+export const logoutUser = createAction(USER_ACTION.LOGOUT);
+export const logoutUserSuccess = createAction(USER_ACTION.LOGOUT_SUCCESS);
+export const logoutUserFail = createAction(USER_ACTION.LOGOUT_FAIL, props<{ error: HttpErrorResponse }>());

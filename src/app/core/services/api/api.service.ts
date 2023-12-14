@@ -50,4 +50,14 @@ export class ApiService {
       })
     );
   }
+
+  deleteProfile(): Observable<null> {
+    return this.http.delete(API_ENDPOINT.LOGOUT).pipe(
+      map(() => null),
+      catchError((error: HttpErrorResponse) => {
+        const profileException: ServerException = error.error;
+        return throwError(() => profileException);
+      })
+    );
+  }
 }

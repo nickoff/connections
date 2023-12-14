@@ -8,5 +8,8 @@ export const userApireducer = createReducer<UserStateModel>(
   on(USER_ACTIONS.getUserSuccess, (_state, { user }): UserStateModel => user),
   on(USER_ACTIONS.getUserFail, (state): UserStateModel => state),
   on(USER_ACTIONS.updateUser, (state): UserStateModel => state),
-  on(USER_ACTIONS.updateUserSuccess, (state, { update }): UserStateModel => ({ ...state, ...update }))
+  on(USER_ACTIONS.updateUserSuccess, (state, { update }): UserStateModel => ({ ...state, ...update })),
+  on(USER_ACTIONS.logoutUser, (state): UserStateModel => state),
+  on(USER_ACTIONS.logoutUserSuccess, (): UserStateModel => InitialUserStateModel),
+  on(USER_ACTIONS.logoutUserFail, (state): UserStateModel => state)
 );

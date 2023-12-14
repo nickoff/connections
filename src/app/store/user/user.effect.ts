@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { filter, map, of, switchMap } from 'rxjs';
+import { UserService } from 'src/app/auth/services/user.service';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OkSnackbarService } from 'src/app/core/services/snackbar/ok-snackbar.service';
 
@@ -14,7 +15,8 @@ export class UserEffect {
     private actions$: Actions,
     private apiService: ApiService,
     private store: Store,
-    private okSnackbar: OkSnackbarService
+    private okSnackbar: OkSnackbarService,
+    private userService: UserService
   ) {}
 
   feachUser$ = createEffect(() => {
@@ -25,7 +27,7 @@ export class UserEffect {
       switchMap(() =>
         this.apiService.getProfileData().pipe(
           map((user) => {
-            this.okSnackbar.openSnackbar('Profile data');
+            this.okSnackbar.openSnackbar('Profile loaded');
             return USER_ACTIONS.getUserSuccess({ user });
           })
         )
@@ -52,4 +54,22 @@ export class UserEffect {
       })
     );
   });
+
+  logoutUser$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(USER_ACTIONS.logoutUser),
+        switchMap(() =>
+          this.apiService.deleteProfile().pipe(
+            map(() => {
+              this.userService.logout();
+              this.okSnackbar.openSnackbar('Logout');
+              return USER_ACTIONS.logoutUserSuccess();
+            })
+          )
+        )
+      );
+    },
+    { dispatch: false }
+  );
 }

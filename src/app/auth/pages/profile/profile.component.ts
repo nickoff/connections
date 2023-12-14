@@ -58,6 +58,9 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  logOut(): void {
+    this.store.dispatch(USER_ACTIONS.logoutUser());
+  }
   editName(): void {
     this.isNameEditable = true;
   }
