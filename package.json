@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deploy": "ng deploy --base-href=https://rolling-scopes-school.github.io/nickoff-ANGULAR2023Q4/"
   },
   "private": true,
   "dependencies": {
