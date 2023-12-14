@@ -37,11 +37,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/connections",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -119,6 +119,14 @@
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/nickoff-ANGULAR2023Q4/",
+            "styles": ["src/styles.scss"]
+          }
+
         }
       }
     }
