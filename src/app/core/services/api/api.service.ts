@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
+import { GroupListModel } from 'src/app/shared/models';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
 
@@ -57,6 +58,15 @@ export class ApiService {
       catchError((error: HttpErrorResponse) => {
         const profileException: ServerException = error.error;
         return throwError(() => profileException);
+      })
+    );
+  }
+
+  getGroupsList(): Observable<GroupListModel> {
+    return this.http.get<GroupListModel>(API_ENDPOINT.GROUPS_LIST).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const groupsException: ServerException = error.error;
+        return throwError(() => groupsException);
       })
     );
   }

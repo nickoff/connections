@@ -1,0 +1,55 @@
+@import '../../../styles/index.scss';
+
+.people {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-between;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      color: $primary-color;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  button {
+    border: none;
+    padding: 10px;
+    color: $text-color;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 3px;
+    background-color: $primary-color;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: $text-color-secondary;
+      cursor: default;
+
+      &:hover {
+        background-color: $text-color-secondary;
+      }
+    }
+
+    &:hover {
+      background-color: $primary-color-hover;
+      transition: 0.3s;
+    }
+  }
+}

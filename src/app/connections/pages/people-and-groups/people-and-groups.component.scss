@@ -1,0 +1,30 @@
+@import '../../../styles/index.scss';
+
+:host {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  background-color: $bg-color;
+}
+
+.groups-wrapper {
+  width: 49%;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    right: -2%;
+    background-color: $message-bg-color;
+  }
+}
+
+.people-wrapper {
+  width: 49%;
+}
+
