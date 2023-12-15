@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { GroupListModel } from 'src/app/shared/models';
+import { GroupListModel, NewGroupResponseModel } from 'src/app/shared/models';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
 
@@ -64,6 +64,27 @@ export class ApiService {
 
   getGroupsList(): Observable<GroupListModel> {
     return this.http.get<GroupListModel>(API_ENDPOINT.GROUPS_LIST).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const groupsException: ServerException = error.error;
+        return throwError(() => groupsException);
+      })
+    );
+  }
+
+  createGroup(groupName: string): Observable<NewGroupResponseModel> {
+    return this.http.post<NewGroupResponseModel>(API_ENDPOINT.GROUPS_CREATE, groupName).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const groupsException: ServerException = error.error;
+        return throwError(() => groupsException);
+      })
+    );
+  }
+
+  deleteGroup(id: string): Observable<null> {
+    const params = new HttpParams().set('groupID', id);
+
+    return this.http.delete(API_ENDPOINT.GROUPS_DELETE, { params }).pipe(
+      map(() => null),
       catchError((error: HttpErrorResponse) => {
         const groupsException: ServerException = error.error;
         return throwError(() => groupsException);

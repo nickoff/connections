@@ -10,10 +10,6 @@ export interface GroupItemModel<T = { S: string }> {
   createdBy: T;
 }
 
-export type NewGroupModel = {
-  name: string;
-};
-
-export type NewGroupeResponseModel = {
+export type NewGroupResponseModel = {
   groupID: string;
 };

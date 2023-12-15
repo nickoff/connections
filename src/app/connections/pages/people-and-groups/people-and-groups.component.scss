@@ -12,16 +12,6 @@
 
 .groups-wrapper {
   width: 49%;
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    right: -2%;
-    background-color: $message-bg-color;
-  }
 }
 
 .people-wrapper {

@@ -1,7 +1,10 @@
 <div class="profile">
   <div class="profile__header">
     <h1 class="profile__title">User profile</h1>
-    <button [disabled]="isLoading$ | async" type="button" class="logout-button" (click)="logOut()">Logout</button>
+    <button [disabled]="isLoading$ | async" type="button" class="logout-button" (click)="logOut()">
+      <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+      <span *ngIf="(isLoading$ | async) === false">Logout</span>
+    </button>
   </div>
   <form [formGroup]="profileUser" class="profile__form">
     <div class="form__input-label">
@@ -21,9 +24,18 @@
       <input type="text" id="date" [readonly]="true" formControlName="createdAt">
     </div>
     <div class="profile__button-wrapper">
-      <button *ngIf="!isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editName()">{{(isLoading$ | async) ? 'Loading...' : 'Edit name'}}</button>
-      <button *ngIf="isNameEditable" [disabled]="(isLoading$ | async ) || isButtonDisabled" type="button" class="profile__button" (click)="editSave()">{{(isLoading$ | async) ? 'Loading...' : 'Save'}}</button>
-      <button *ngIf="isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editCancel()">{{(isLoading$ | async) ? 'Loading...' : 'Cancel'}}</button>
+      <button *ngIf="!isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editName()">
+        <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+        <span *ngIf="(isLoading$ | async) === false">Edit name</span>
+      </button>
+      <button *ngIf="isNameEditable" [disabled]="(isLoading$ | async ) || isButtonDisabled" type="button" class="profile__button" (click)="editSave()">
+        <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+        <span *ngIf="(isLoading$ | async) === false">Save</span>
+      </button>
+      <button *ngIf="isNameEditable" [disabled]="isLoading$ | async" type="button" class="profile__button" (click)="editCancel()">
+        <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+        <span *ngIf="(isLoading$ | async) === false">Cancel</span>
+      </button>
     </div>
     <span class="profile__form-error" *ngIf="isShowNameError">{{nameErrors}}</span>
   </form>

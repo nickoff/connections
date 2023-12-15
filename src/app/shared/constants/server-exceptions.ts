@@ -34,7 +34,7 @@ export type ServerException =
       type: 'InvalidTokenException';
       message: 'Current session token is not valid.';
     }
-  | { type: 'InvalidIDException'; message: 'User was not found/' }
+  | { type: 'InvalidIDException'; message: 'User was not found' }
   | {
       type: 'InvalidIDException';
       message: 'User was not found. Check passed identificators.';

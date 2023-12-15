@@ -1,11 +1,13 @@
 import { animate, query, state, style, transition, trigger } from '@angular/animations';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
+import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
@@ -19,7 +21,7 @@ import { validatePasswordStrength } from '../../services/validate-password.servi
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [LogoComponent, RouterLink, ReactiveFormsModule, NgIf, NgFor],
+  imports: [LogoComponent, RouterLink, ReactiveFormsModule, CommonModule, MatProgressBarModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
   animations: [
@@ -35,7 +37,7 @@ import { validatePasswordStrength } from '../../services/validate-password.servi
 export class SignupComponent implements OnInit {
   isSubmitted = false;
   isButtonDisabled = true;
-  isLoading = false;
+  isLoading$ = this.loadingService.getLoading;
 
   registrationCredentails: FormGroup<SignupModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
@@ -62,7 +64,8 @@ export class SignupComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
     private navigate: NavigateService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -149,13 +152,11 @@ export class SignupComponent implements OnInit {
   }
 
   private signIn(registrationCredentails: SignupRequestModel): void {
-    this.isLoading = true;
     this.apiService
       .fetchRegistration(registrationCredentails)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.isLoading = false;
           const snackBarRef = this.snackBar.open(
             `✔️ OK! ${registrationCredentails.name} successfully registered! ✔️`,
             '',
@@ -176,7 +177,6 @@ export class SignupComponent implements OnInit {
         },
         error: () => {
           this.isButtonDisabled = false;
-          this.isLoading = false;
           this.cdr.markForCheck();
         }
       });

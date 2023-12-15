@@ -5,7 +5,7 @@ import { NavigateService } from 'src/app/core/services/navigate/navigate.service
   providedIn: 'root'
 })
 export class UserService {
-  cookies = document.cookie;
+  private cookies = document.cookie;
 
   constructor(private navigate: NavigateService) {}
 

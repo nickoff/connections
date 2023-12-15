@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
@@ -16,7 +17,7 @@ import { validateName } from '../../services/validate-name.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatProgressBarModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

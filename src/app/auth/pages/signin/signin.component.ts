@@ -1,11 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
+import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component';
 import { SigninRequestModel, SigninResponseModel } from 'src/app/shared/models/signin.model';
@@ -17,7 +19,7 @@ import { SigninModel } from '../../models';
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [LogoComponent, RouterLink, ReactiveFormsModule, NgIf],
+  imports: [LogoComponent, RouterLink, ReactiveFormsModule, CommonModule, MatProgressBarModule],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
   animations: [
@@ -32,7 +34,7 @@ import { SigninModel } from '../../models';
 export class SigninComponent implements OnInit {
   isSubmitted = false;
   isButtonDisabled = true;
-  isLoading = false;
+  isLoading$ = this.loadingService.getLoading;
 
   credentails: FormGroup<SigninModel> = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
@@ -53,6 +55,7 @@ export class SigninComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
     private navigate: NavigateService,
+    private loadingService: LoadingService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -123,13 +126,11 @@ export class SigninComponent implements OnInit {
   }
 
   private signIn(credentails: SigninRequestModel): void {
-    this.isLoading = true;
     this.apiService
       .fetchAuthData(credentails)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response: SigninResponseModel) => {
-          this.isLoading = false;
           (Object.keys(response) as Array<keyof SigninResponseModel>).forEach((key) => {
             localStorage.setItem(key, response[key]);
           });
@@ -150,7 +151,6 @@ export class SigninComponent implements OnInit {
         },
         error: () => {
           this.isButtonDisabled = false;
-          this.isLoading = false;
           this.cdr.markForCheck();
         }
       });

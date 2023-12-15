@@ -11,7 +11,10 @@
       <span @fade class="signin__form-error" *ngIf="isShowPasswordError">{{" - " + passwordErrors}}</span>
     </div>
     <input formControlName="password" type="password" id="password">
-    <button [disabled]="isButtonDisabled">{{isLoading ? 'Loading...' : 'Sign in'}}</button>
+    <button [disabled]="isButtonDisabled">
+      <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+      <span *ngIf="(isLoading$ | async) === false">Sign in</span>
+    </button>
   </form>
   <p class="signin__text">Don't have an account? <a routerLink="/signup">Sign up</a></p>
 </div>

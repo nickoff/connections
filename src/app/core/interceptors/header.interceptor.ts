@@ -8,6 +8,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { UserService } from 'src/app/auth/services/user.service';
 import { ServerException } from 'src/app/shared/constants/server-exceptions';
 
 import { ErrorSnackbarService } from '../services/snackbar/error-snackbar.service';
@@ -25,6 +26,8 @@ export const headerInterceptor: HttpInterceptorFn = (
   });
 
   const snackBar = inject(ErrorSnackbarService);
+  const userService = inject(UserService);
+
   return next(
     request.clone({
       headers: newHeader
@@ -32,6 +35,9 @@ export const headerInterceptor: HttpInterceptorFn = (
   ).pipe(
     catchError((error: HttpErrorResponse) => {
       const serverException: ServerException = error.error;
+      if (serverException.type === 'InvalidTokenException' || serverException.type === 'InvalidIDException') {
+        userService.logout();
+      }
       snackBar.openSnackbar(serverException.message);
       return throwError(() => serverException);
     })

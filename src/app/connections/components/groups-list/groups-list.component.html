@@ -6,6 +6,12 @@
       <button>Update list</button>
     </div>
   </div>
-  <ul class="groups__list"></ul>
+    <cdk-virtual-scroll-viewport itemSize="50" class="groups__viewport">
+      <div *ngFor="let group of groupsList$ | async" class="groups__item">
+        <mat-icon>group</mat-icon>
+        <span>{{group.name.S}}</span>
+        <mat-icon *ngIf="myUid === group.createdBy.S" class="trash">close</mat-icon>
+      </div>
+    </cdk-virtual-scroll-viewport>
 </div>
 

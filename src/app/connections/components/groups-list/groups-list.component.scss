@@ -12,12 +12,59 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 20px;
 
     h1 {
       margin: 0;
       font-size: 24px;
       color: $primary-color;
       text-transform: uppercase;
+    }
+  }
+
+  &__viewport {
+    height: 100%;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+      background-color: $message-bg-color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      width: 4px;
+      background-color: $primary-color;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-right: 20px;
+    border-top: solid 1px $surface-primary-color;
+    border-bottom: solid 1px $surface-primary-color;
+    color:  $text-color-secondary;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      color: $text-color;
+      transition: 0.3s;
+      background-color: $surface-primary-color;
+    }
+
+    .trash {
+      margin-left: auto;
+
+      &:hover {
+        color: $danger-color;
+      }
+    }
+
+    span {
+      margin-left: 10px;
     }
   }
 }
