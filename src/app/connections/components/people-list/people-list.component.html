@@ -2,7 +2,9 @@
   <div class="people__header">
     <h1 class="people__title">People</h1>
     <div class="buttons">
-      <button>Update list</button>
+      <button [disabled]="disabledSub$ | async" (click)="starTimer()">
+        {{(disabledSub$ | async) ? (countdownSub$ | async) : 'Update list'}}
+      </button>
     </div>
   </div>
   <ul class="people__list"></ul>

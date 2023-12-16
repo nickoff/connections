@@ -8,7 +8,7 @@ export class ErrorSnackbarService {
   constructor(private snackbar: MatSnackBar) {}
   openSnackbar(message: string): void {
     this.snackbar.open(`⚠️ ERROR: ${message || 'Server call failed'} ⚠️`, '', {
-      duration: 5000,
+      duration: 3000,
       verticalPosition: 'top',
       panelClass: ['error-snackbar']
     });

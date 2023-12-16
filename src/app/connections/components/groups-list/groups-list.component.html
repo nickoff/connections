@@ -3,7 +3,9 @@
     <h1 class="groups__title">Groups</h1>
     <div class="buttons">
       <button>Add group</button>
-      <button>Update list</button>
+      <button [disabled]="disabledSub$ | async" (click)="starTimer()">
+        {{(disabledSub$ | async) ? (countdownSub$ | async) : 'Update list'}}
+      </button>
     </div>
   </div>
     <cdk-virtual-scroll-viewport itemSize="50" class="groups__viewport">

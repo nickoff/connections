@@ -8,7 +8,7 @@ export class OkSnackbarService {
   constructor(private snackbar: MatSnackBar) {}
   openSnackbar(message: string): void {
     this.snackbar.open(`✔️ OK: ${message} from server successfully ✔️`, '', {
-      duration: 5000,
+      duration: 3000,
       verticalPosition: 'top',
       panelClass: ['ok-snackbar']
     });
