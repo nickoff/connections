@@ -30,4 +30,21 @@ export class GroupsEffect {
       )
     );
   });
+
+  deleteGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GROUPS_ACTIONS.deleteGroup),
+      switchMap((action) =>
+        this.apiService.deleteGroup(action.groupID).pipe(
+          map(() => {
+            this.okSnackbar.openSnackbar('Group deleted');
+            return GROUPS_ACTIONS.deleteGroupSuccess({ groupID: action.groupID });
+          }),
+          catchError((error) => {
+            return of(GROUPS_ACTIONS.deleteGroupFail({ error }));
+          })
+        )
+      )
+    );
+  });
 }

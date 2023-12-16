@@ -12,7 +12,7 @@
       <div *ngFor="let group of groupsList$ | async" class="groups__item">
         <mat-icon>group</mat-icon>
         <span>{{group.name.S}}</span>
-        <mat-icon *ngIf="myUid === group.createdBy.S" class="trash">close</mat-icon>
+        <mat-icon *ngIf="myUid === group.createdBy.S" class="trash" (click)="openDialog('500ms', '300ms', group.id.S)">close</mat-icon>
       </div>
     </cdk-virtual-scroll-viewport>
 </div>

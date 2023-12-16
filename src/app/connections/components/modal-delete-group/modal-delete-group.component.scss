@@ -1,0 +1,21 @@
+@import '../../../styles/index.scss';
+
+.modal-button {
+  background-color: $primary-color;
+  width: 20%;
+  border: none;
+  color: $text-color !important;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 0 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primary-color-hover;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
