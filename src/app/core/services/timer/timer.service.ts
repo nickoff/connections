@@ -8,20 +8,20 @@ export interface CreateTimer {
   startCountDown: () => void;
 }
 
+const startCountdownValue = 60;
+
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
   private timers = new Map<string, CreateTimer>();
 
-  private startCountdownValue = 60;
   createTimer(id: string, onComplete?: () => void): CreateTimer | undefined {
     if (this.timers.has(id)) {
       return this.timers.get(id);
     }
 
-    const startvalue = 60;
-    let countdown = startvalue;
+    let countdown = startCountdownValue;
     let isDisabled = false;
     const countdownStatus = new BehaviorSubject<number>(countdown);
     const disabledStatus = new BehaviorSubject<boolean>(isDisabled);
@@ -36,7 +36,7 @@ export class TimerService {
           clearInterval(intervalId);
           isDisabled = false;
           disabledStatus.next(isDisabled);
-          countdown = startvalue;
+          countdown = startCountdownValue;
           countdownStatus.next(countdown);
           if (onComplete) onComplete();
         }
