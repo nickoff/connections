@@ -3,6 +3,12 @@
   Would you like to delete this group?
 </div>
 <div mat-dialog-actions align="end">
-  <button class="modal-button" mat-dialog-close>No</button>
-  <button class="modal-button" (click)="close()">Ok</button>
+  <button [disabled]="isLoading$ | async" class="modal-button" mat-dialog-close>
+    <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+        <span *ngIf="(isLoading$ | async) === false">No</span>
+  </button>
+  <button [disabled]="isLoading$ | async" class="modal-button" (click)="close()">
+    <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
+        <span *ngIf="(isLoading$ | async) === false">Ok</span>
+  </button>
 </div>

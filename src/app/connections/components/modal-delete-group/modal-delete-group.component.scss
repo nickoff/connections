@@ -3,6 +3,7 @@
 .modal-button {
   background-color: $primary-color;
   width: 20%;
+  height: 38px;
   border: none;
   color: $text-color !important;
   text-transform: uppercase;
@@ -17,5 +18,10 @@
 
   &:focus {
     outline: none;
+  }
+
+  &:disabled {
+    background-color: $text-color-secondary;
+    cursor: default;
   }
 }
