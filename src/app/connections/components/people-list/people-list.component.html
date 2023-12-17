@@ -7,5 +7,10 @@
       </button>
     </div>
   </div>
-  <ul class="people__list"></ul>
+  <cdk-virtual-scroll-viewport itemSize="50" class="people__viewport">
+    <div *ngFor="let people of peopleList$ | async" class="people__item" [ngClass]="{'conversation': people.conversationId}">
+      <mat-icon>person</mat-icon>
+      <span>{{people.name.S}}</span>
+    </div>
+  </cdk-virtual-scroll-viewport>
 </div>

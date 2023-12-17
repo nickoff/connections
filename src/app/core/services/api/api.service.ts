@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { GroupListModel, NewGroupResponseModel } from 'src/app/shared/models';
+import { GroupListModel, NewGroupResponseModel, PeopleListModel } from 'src/app/shared/models';
+import { ConversationsListModel } from 'src/app/shared/models/conversations-list.model';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
 
@@ -88,6 +89,24 @@ export class ApiService {
       catchError((error: HttpErrorResponse) => {
         const groupsException: ServerException = error.error;
         return throwError(() => groupsException);
+      })
+    );
+  }
+
+  getPeopleList(): Observable<PeopleListModel> {
+    return this.http.get<PeopleListModel>(API_ENDPOINT.USERS).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
+      })
+    );
+  }
+
+  getConversationsList(): Observable<ConversationsListModel> {
+    return this.http.get<ConversationsListModel>(API_ENDPOINT.CONVERSATIONS_LIST).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
       })
     );
   }
