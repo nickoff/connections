@@ -72,7 +72,7 @@ export class ApiService {
   }
 
   createGroup(groupName: string): Observable<NewGroupResponseModel> {
-    return this.http.post<NewGroupResponseModel>(API_ENDPOINT.GROUPS_CREATE, groupName).pipe(
+    return this.http.post<NewGroupResponseModel>(API_ENDPOINT.GROUPS_CREATE, { name: groupName }).pipe(
       catchError((error: HttpErrorResponse) => {
         const groupsException: ServerException = error.error;
         return throwError(() => groupsException);

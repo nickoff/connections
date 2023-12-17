@@ -1,6 +1,7 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +10,7 @@ import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
 import { GROUPS_ACTIONS, selectGroups } from 'src/app/store/groups';
 
+import { ModalAddGroupComponent } from '../modal-add-group/modal-add-group.component';
 import { ModalDeleteGroupComponent } from '../modal-delete-group/modal-delete-group.component';
 
 @Component({
@@ -31,23 +33,35 @@ export class GroupsListComponent implements OnInit {
     private loadingService: LoadingService,
     private store: Store,
     private timerService: TimerService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private destroyRef: DestroyRef,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
-    this.groupsList$.subscribe((groups) => {
+    this.groupsList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
       if (groups.length === 0) {
         this.store.dispatch(GROUPS_ACTIONS.getGroups());
       }
+      this.cdr.markForCheck();
     });
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
+  deleteGroup(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
     this.dialog.open(ModalDeleteGroupComponent, {
       enterAnimationDuration,
       exitAnimationDuration,
       disableClose: true,
-      panelClass: 'modal-delete-group',
+      panelClass: 'modal-group',
       id
+    });
+  }
+
+  addGroup(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ModalAddGroupComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      disableClose: true,
+      panelClass: 'modal-group'
     });
   }
 

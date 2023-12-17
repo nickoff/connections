@@ -31,6 +31,31 @@ export class GroupsEffect {
     );
   });
 
+  addGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GROUPS_ACTIONS.createGroup),
+      switchMap((action) =>
+        this.apiService.createGroup(action.newGroupName).pipe(
+          map((newGroupId) => {
+            this.okSnackbar.openSnackbar('Group created');
+            const myUid = localStorage.getItem('uid');
+            if (!myUid) return { type: 'NO_GROUP_ACTION', message: 'No group action' };
+            const newGroup = {
+              id: { S: newGroupId.groupID },
+              name: { S: action.newGroupName },
+              createdAt: { S: new Date().getTime().toString() },
+              createdBy: { S: myUid }
+            };
+            return GROUPS_ACTIONS.createGroupSuccess({ newGroup });
+          }),
+          catchError((error) => {
+            return of(GROUPS_ACTIONS.createGroupFail({ error }));
+          })
+        )
+      )
+    );
+  });
+
   deleteGroup$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(GROUPS_ACTIONS.deleteGroup),

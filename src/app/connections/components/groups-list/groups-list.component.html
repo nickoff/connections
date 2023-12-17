@@ -2,7 +2,7 @@
   <div class="groups__header">
     <h1 class="groups__title">Groups</h1>
     <div class="buttons">
-      <button>Add group</button>
+      <button (click)="addGroup('500ms', '300ms')">Add group</button>
       <button [disabled]="disabledSub$ | async" (click)="starTimer()">
         {{(disabledSub$ | async) ? (countdownSub$ | async) : 'Update list'}}
       </button>
@@ -12,7 +12,7 @@
       <div *ngFor="let group of groupsList$ | async" class="groups__item">
         <mat-icon>group</mat-icon>
         <span>{{group.name.S}}</span>
-        <mat-icon *ngIf="myUid === group.createdBy.S" class="trash" (click)="openDialog('500ms', '300ms', group.id.S)">close</mat-icon>
+        <mat-icon *ngIf="myUid === group.createdBy.S" class="trash" (click)="deleteGroup('500ms', '300ms', group.id.S)">close</mat-icon>
       </div>
     </cdk-virtual-scroll-viewport>
 </div>
