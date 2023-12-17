@@ -22,7 +22,7 @@ import { ModalDeleteGroupComponent } from '../modal-delete-group/modal-delete-gr
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupsListComponent implements OnInit {
-  private timer = this.timerService.createTimer('groupsList', this.updateList.bind(this));
+  private timer = this.timerService.createTimer('groupsList');
   isLoading$ = this.loadingService.getLoading;
   groupsList$ = this.store.select(selectGroups);
   countdownSub$ = this.timer && this.timer.countdownStatus;
