@@ -4,13 +4,15 @@
     <label for="name">Enter the name of the new group</label>
     <input formControlName="name" type="text" id="name" formControlName="name">
   </form>
+  <span class="input-label__form-error" *ngIf="isShowNameError">{{nameErrors}}</span>
+  <br *ngIf="!isShowNameError">
 </div>
 <div mat-dialog-actions align="end">
   <button [disabled]="isLoading$ | async" class="modal-button" mat-dialog-close>
     <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
         <span *ngIf="(isLoading$ | async) === false">No</span>
   </button>
-  <button [disabled]="isLoading$ | async" class="modal-button" (click)="addGroup()">
+  <button [disabled]="(isLoading$ | async) || isButtonDisabled" class="modal-button" (click)="addGroup()">
     <mat-progress-bar mode='buffer' *ngIf="isLoading$ | async" />
         <span *ngIf="(isLoading$ | async) === false">Ok</span>
   </button>

@@ -9,7 +9,7 @@
   text-transform: uppercase;
   padding: 10px;
   border-radius: 3px;
-  margin: 5px 5px;
+  margin: 0 5px 5px 0;
   cursor: pointer;
 
   &:hover {
@@ -44,5 +44,12 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &__form-error {
+    font-size: 12px;
+    color: $danger-color;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 }
