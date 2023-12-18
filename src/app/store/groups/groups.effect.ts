@@ -77,15 +77,32 @@ export class GroupsEffect {
 
   feachGroupDialogs$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(GROUPS_ACTIONS.readeGroupDialogs),
+      ofType(GROUPS_ACTIONS.readGroupDialogs),
       switchMap((action) =>
         this.apiService.readGroupDialogs(action.groupID).pipe(
           map((dialogs) => {
             this.okSnackbar.openSnackbar('Group dialogs loaded');
-            return GROUPS_ACTIONS.readeGroupDialogsSuccess({ groupID: action.groupID, dialogs });
+            return GROUPS_ACTIONS.readGroupDialogsSuccess({ groupID: action.groupID, dialogs });
           }),
           catchError((error) => {
-            return of(GROUPS_ACTIONS.readeGroupDialogsFail({ error }));
+            return of(GROUPS_ACTIONS.readGroupDialogsFail({ error }));
+          })
+        )
+      )
+    );
+  });
+
+  updateGroupDialog$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GROUPS_ACTIONS.updateGroupDialog),
+      switchMap((action) =>
+        this.apiService.updateGroupDialogs(action.groupID, Number(action.dateLastMessage)).pipe(
+          map((newDialogs) => {
+            this.okSnackbar.openSnackbar('Group dialogs updated');
+            return GROUPS_ACTIONS.updateGroupDialogSuccess({ groupID: action.groupID, newDialogs });
+          }),
+          catchError((error) => {
+            return of(GROUPS_ACTIONS.updateGroupDialogFail({ error }));
           })
         )
       )

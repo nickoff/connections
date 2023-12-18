@@ -13,22 +13,19 @@ const createGroupFail = createAction(GROUPS_ACTION.CREATE_GROUP_FAIL, props<{ er
 const deleteGroup = createAction(GROUPS_ACTION.DELETE_GROUP, props<{ groupID: string }>());
 const deleteGroupSuccess = createAction(GROUPS_ACTION.DELETE_GROUP_SUCCESS, props<{ groupID: string }>());
 const deleteGroupFail = createAction(GROUPS_ACTION.DELETE_GROUP_FAIL, props<{ error: HttpErrorResponse }>());
-const readeGroupDialogs = createAction(GROUPS_ACTION.READ_GROUP_DIALOGS, props<{ groupID: string }>());
-const readeGroupDialogsSuccess = createAction(
+const readGroupDialogs = createAction(GROUPS_ACTION.READ_GROUP_DIALOGS, props<{ groupID: string }>());
+const readGroupDialogsSuccess = createAction(
   GROUPS_ACTION.READ_GROUP_DIALOGS_SUCCESS,
   props<{ groupID: string; dialogs: DialogsGroupModel }>()
 );
-const readeGroupDialogsFail = createAction(
-  GROUPS_ACTION.READ_GROUP_DIALOGS_FAIL,
-  props<{ error: HttpErrorResponse }>()
-);
+const readGroupDialogsFail = createAction(GROUPS_ACTION.READ_GROUP_DIALOGS_FAIL, props<{ error: HttpErrorResponse }>());
 const updateGroupDialog = createAction(
   GROUPS_ACTION.UPDATE_GROUP_DIALOG,
   props<{ groupID: string; dateLastMessage: string }>()
 );
 const updateGroupDialogSuccess = createAction(
   GROUPS_ACTION.UPDATE_GROUP_DIALOG_SUCCESS,
-  props<{ dialogs: DialogsGroupModel }>()
+  props<{ groupID: string; newDialogs: DialogsGroupModel }>()
 );
 const updateGroupDialogFail = createAction(
   GROUPS_ACTION.UPDATE_GROUP_DIALOG_FAIL,
@@ -54,9 +51,9 @@ export {
   getGroups,
   getGroupsFail,
   getGroupsSuccess,
-  readeGroupDialogs,
-  readeGroupDialogsFail,
-  readeGroupDialogsSuccess,
+  readGroupDialogs,
+  readGroupDialogsFail,
+  readGroupDialogsSuccess,
   updateGroupDialog,
   updateGroupDialogFail,
   updateGroupDialogSuccess

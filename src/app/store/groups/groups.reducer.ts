@@ -24,13 +24,36 @@ export const groupsApiReducer = createReducer<GroupsStateModel>(
     return state;
   }),
   on(GROUPS_ACTIONS.deleteGroupFail, (state): GroupsStateModel => state),
-  on(GROUPS_ACTIONS.readeGroupDialogs, (state): GroupsStateModel => state),
-  on(GROUPS_ACTIONS.readeGroupDialogsSuccess, (state, { groupID, dialogs }): GroupsStateModel => {
+  on(GROUPS_ACTIONS.readGroupDialogs, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.readGroupDialogsSuccess, (state, { groupID, dialogs }): GroupsStateModel => {
     if (state) {
       const lastUpdated = String(new Date().getTime());
       return { ...state, Items: state.Items.map((i) => (i.id.S === groupID ? { ...i, dialogs, lastUpdated } : i)) };
     }
     return state;
   }),
-  on(GROUPS_ACTIONS.readeGroupDialogsFail, (state): GroupsStateModel => state)
+  on(GROUPS_ACTIONS.readGroupDialogsFail, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.updateGroupDialog, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.updateGroupDialogSuccess, (state, { groupID, newDialogs }): GroupsStateModel => {
+    if (state) {
+      const lastUpdated = String(new Date().getTime());
+      return {
+        ...state,
+        Items: state.Items.map((i) =>
+          i.id.S === groupID
+            ? {
+                ...i,
+                dialogs: {
+                  ...i.dialogs,
+                  Count: (i.dialogs?.Count || 0) + (newDialogs.Count || 0),
+                  Items: [...(i.dialogs?.Items || []), ...newDialogs.Items]
+                },
+                lastUpdated
+              }
+            : i
+        )
+      };
+    }
+    return state;
+  })
 );

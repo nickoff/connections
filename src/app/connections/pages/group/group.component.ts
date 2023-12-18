@@ -48,6 +48,53 @@ export class GroupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initComponents();
+  }
+
+  handlerClickDeleteGroup(): void {
+    if (!this.group$) return;
+    this.group$
+      .pipe(
+        take(1),
+        filter((group) => !!group?.id?.S)
+      )
+      .subscribe((group) => {
+        this.deleteGroup('500ms', '300ms', group.id.S);
+      });
+  }
+
+  updateMessage(): void {
+    if (!this.group$) return;
+    this.group$
+      .pipe(
+        take(1),
+        filter((group) => !!group?.id?.S)
+      )
+      .subscribe((group) => {
+        if (group.lastUpdated) {
+          this.store.dispatch(
+            GROUPS_ACTIONS.updateGroupDialog({ groupID: group.id.S, dateLastMessage: group.lastUpdated })
+          );
+        }
+      });
+  }
+
+  starTimer(): void {
+    this.updateMessage();
+    this.timer && this.timer.startCountDown();
+  }
+
+  private deleteGroup(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
+    this.dialog.open(ModalDeleteGroupComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      disableClose: true,
+      panelClass: 'modal-group',
+      id
+    });
+  }
+
+  private initComponents(): void {
     this.groupsList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
       if (groups.length === 0) {
         this.store.dispatch(GROUPS_ACTIONS.getGroups());
@@ -72,7 +119,12 @@ export class GroupComponent implements OnInit {
           this.groupDialogs$ = this.store.select(selectGroupDialogsByID(id)) as Observable<DialogItemModel[]>;
           this.groupDialogs$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((dialogs) => {
             if (dialogs.length === 0 && !group.lastUpdated && !this.pageLoad) {
-              this.store.dispatch(GROUPS_ACTIONS.readeGroupDialogs({ groupID: id }));
+              this.store.dispatch(GROUPS_ACTIONS.readGroupDialogs({ groupID: id }));
+            }
+            if (group.lastUpdated && !this.pageLoad) {
+              this.store.dispatch(
+                GROUPS_ACTIONS.updateGroupDialog({ groupID: id, dateLastMessage: group.lastUpdated })
+              );
             }
             this.pageLoad = true;
             this.cdr.markForCheck();
@@ -82,31 +134,5 @@ export class GroupComponent implements OnInit {
       });
       this.cdr.markForCheck();
     });
-  }
-
-  handlerClickDeleteGroup(): void {
-    if (!this.group$) return;
-    this.group$
-      .pipe(
-        take(1),
-        filter((group) => !!group?.id?.S)
-      )
-      .subscribe((group) => {
-        this.deleteGroup('500ms', '300ms', group.id.S);
-      });
-  }
-
-  private deleteGroup(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
-    this.dialog.open(ModalDeleteGroupComponent, {
-      enterAnimationDuration,
-      exitAnimationDuration,
-      disableClose: true,
-      panelClass: 'modal-group',
-      id
-    });
-  }
-
-  starTimer(): void {
-    this.timer && this.timer.startCountDown();
   }
 }
