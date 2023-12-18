@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
@@ -16,7 +17,15 @@ import { ModalDeleteGroupComponent } from '../modal-delete-group/modal-delete-gr
 @Component({
   selector: 'app-groups-list',
   standalone: true,
-  imports: [CommonModule, ScrollingModule, MatIconModule, MatDialogModule, MatButtonModule, ModalDeleteGroupComponent],
+  imports: [
+    CommonModule,
+    ScrollingModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    ModalDeleteGroupComponent,
+    RouterModule
+  ],
   templateUrl: './groups-list.component.html',
   styleUrl: './groups-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,1 +1,27 @@
-<p>group works!</p>
+<div class="group">
+  <div class="group__header">
+    <h1 class="group__title">Group: <span>{{(group$ | async)?.name?.S}}</span></h1>
+    <div class="group__footer">
+      <p><span>Created by: </span>{{(groupOwner$ | async)?.name?.S}}</p>
+      <p><span>Created at: </span>{{(group$ | async)?.createdAt?.S | date:'medium'}}</p>
+      <p><span>ID: </span>{{(group$ | async)?.id?.S}}</p>
+    </div>
+    <div class="buttons">
+      <button [disabled]="disabledSub$ | async" (click)="starTimer()">
+        {{(disabledSub$ | async) ? (countdownSub$ | async) : 'Update'}}
+      </button>
+      <button *ngIf="myUid === (groupOwner$ | async)?.uid?.S" (click)="handlerClickDeleteGroup()">Delete group</button>
+    </div>
+  </div>
+  <cdk-virtual-scroll-viewport itemSize="50" class="group__messages-viewport">
+    <div class="message__item" >
+
+    </div>
+  </cdk-virtual-scroll-viewport>
+  <div class="group__message-input">
+    <form>
+      <textarea placeholder="Enter your message" formControlName="message"></textarea>
+      <mat-icon class="group__send-button">send</mat-icon>
+    </form>
+  </div>
+</div>

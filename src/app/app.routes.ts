@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { SigninComponent } from './auth/pages/signin/signin.component';
+import { GroupComponent } from './connections/pages/group/group.component';
 import { PeopleAndGroupsComponent } from './connections/pages/people-and-groups/people-and-groups.component';
 import { authGuard } from './core/guards/auth.guard';
 import { MainComponent } from './core/pages/main/main.component';
@@ -19,6 +20,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadChildren: () => import('./auth/pages/profile/profile.routes').then((m) => m.routes)
+      },
+      {
+        path: 'group/:id',
+        component: GroupComponent
       }
     ]
   },

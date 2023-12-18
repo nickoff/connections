@@ -9,11 +9,12 @@
     </div>
   </div>
     <cdk-virtual-scroll-viewport itemSize="50" class="groups__viewport">
-      <div *ngFor="let group of groupsList$ | async" class="groups__item">
+      <div *ngFor="let group of groupsList$ | async" class="groups__item" >
+        <a class="groups__link" [routerLink]="['/group', group.id.S]">
         <mat-icon>group</mat-icon>
         <span>{{group.name.S}}</span>
+      </a>
         <mat-icon *ngIf="myUid === group.createdBy.S" class="trash" (click)="deleteGroup('500ms', '300ms', group.id.S)">close</mat-icon>
       </div>
     </cdk-virtual-scroll-viewport>
 </div>
-

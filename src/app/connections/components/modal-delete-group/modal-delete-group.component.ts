@@ -12,6 +12,7 @@ import {
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Store } from '@ngrx/store';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
+import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { GROUPS_ACTIONS, selectGroupByID } from 'src/app/store/groups';
 
 @Component({
@@ -37,7 +38,8 @@ export class ModalDeleteGroupComponent {
     private store: Store,
     private destroyRef: DestroyRef,
     private cdr: ChangeDetectorRef,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private navigateService: NavigateService
   ) {}
 
   deleteGroup(): void {
@@ -47,6 +49,7 @@ export class ModalDeleteGroupComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((group) => {
         if (!group) this.dialogRef.close();
+        this.navigateService.navigateToRoot();
         this.cdr.markForCheck();
       });
   }

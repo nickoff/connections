@@ -32,8 +32,8 @@ export class PeopleListComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
-    this.peopleList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
-      if (groups.length === 0) {
+    this.peopleList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((people) => {
+      if (people.length === 0) {
         this.store.dispatch(PEOPLE_ACTIONS.getPeople());
       }
       this.cdr.markForCheck();

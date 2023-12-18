@@ -40,13 +40,14 @@
   &__item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    margin-right: 20px;
     border-top: solid 1px $surface-primary-color;
     border-bottom: solid 1px $surface-primary-color;
     color:  $text-color-secondary;
     font-size: 16px;
+    text-decoration: none;
     text-transform: uppercase;
+    padding-right: 10px;
+    margin-right: 20px;
     cursor: pointer;
 
     &:hover {
@@ -67,7 +68,21 @@
       margin-left: 10px;
     }
   }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+    padding: 10px;
+    color:  $text-color-secondary;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
 }
+
 
 .buttons {
   display: flex;
