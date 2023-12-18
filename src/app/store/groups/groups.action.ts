@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
-import { GroupItemModel, GroupListModel } from 'src/app/shared/models';
+import { DialogItemModel, DialogsGroupModel, GroupItemModel, GroupListModel } from 'src/app/shared/models';
 
 import { GROUPS_ACTION } from './groups.types';
 
@@ -13,8 +13,38 @@ const createGroupFail = createAction(GROUPS_ACTION.CREATE_GROUP_FAIL, props<{ er
 const deleteGroup = createAction(GROUPS_ACTION.DELETE_GROUP, props<{ groupID: string }>());
 const deleteGroupSuccess = createAction(GROUPS_ACTION.DELETE_GROUP_SUCCESS, props<{ groupID: string }>());
 const deleteGroupFail = createAction(GROUPS_ACTION.DELETE_GROUP_FAIL, props<{ error: HttpErrorResponse }>());
+const readeGroupDialogs = createAction(GROUPS_ACTION.READ_GROUP_DIALOGS, props<{ groupID: string }>());
+const readeGroupDialogsSuccess = createAction(
+  GROUPS_ACTION.READ_GROUP_DIALOGS_SUCCESS,
+  props<{ groupID: string; dialogs: DialogsGroupModel }>()
+);
+const readeGroupDialogsFail = createAction(
+  GROUPS_ACTION.READ_GROUP_DIALOGS_FAIL,
+  props<{ error: HttpErrorResponse }>()
+);
+const updateGroupDialog = createAction(
+  GROUPS_ACTION.UPDATE_GROUP_DIALOG,
+  props<{ groupID: string; dateLastMessage: string }>()
+);
+const updateGroupDialogSuccess = createAction(
+  GROUPS_ACTION.UPDATE_GROUP_DIALOG_SUCCESS,
+  props<{ dialogs: DialogsGroupModel }>()
+);
+const updateGroupDialogFail = createAction(
+  GROUPS_ACTION.UPDATE_GROUP_DIALOG_FAIL,
+  props<{ error: HttpErrorResponse }>()
+);
+const appendMessage = createAction(GROUPS_ACTION.APPEND_MESSAGE, props<{ groupID: string; message: string }>());
+const appendMessageSuccess = createAction(
+  GROUPS_ACTION.APPEND_MESSAGE_SUCCESS,
+  props<{ newMessage: DialogItemModel }>()
+);
+const appendMessageFail = createAction(GROUPS_ACTION.APPEND_MESSAGE_FAIL, props<{ error: HttpErrorResponse }>());
 
 export {
+  appendMessage,
+  appendMessageFail,
+  appendMessageSuccess,
   createGroup,
   createGroupFail,
   createGroupSuccess,
@@ -23,5 +53,11 @@ export {
   deleteGroupSuccess,
   getGroups,
   getGroupsFail,
-  getGroupsSuccess
+  getGroupsSuccess,
+  readeGroupDialogs,
+  readeGroupDialogsFail,
+  readeGroupDialogsSuccess,
+  updateGroupDialog,
+  updateGroupDialogFail,
+  updateGroupDialogSuccess
 };

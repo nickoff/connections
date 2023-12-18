@@ -173,3 +173,33 @@
     }
   }
 }
+
+.message-item {
+  display: flex;
+  flex-direction: column;
+  max-width: fit-content;
+  min-width: 20%;
+  background-color: $message-bg-color;
+  padding: 10px;
+  margin: 10px 20px;
+  border-radius: 0 10px 10px 10px;
+  color: $text-color;
+
+  &__date {
+    color: $text-color-secondary;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 3px 0;
+  }
+
+
+}
+
+.my-message {
+  margin-left: auto;
+  border-radius: 10px 0 10px 10px;
+  background-color: $surface-primary-color;
+}

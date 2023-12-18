@@ -7,5 +7,14 @@ export const GROUPS_ACTION = {
   CREATE_GROUP_FAIL: '[Groups list] Create Group fail',
   DELETE_GROUP: '[Groups list] Delete Group',
   DELETE_GROUP_SUCCESS: '[Groups list] Delete Group success',
-  DELETE_GROUP_FAIL: '[Groups list] Delete Group fail'
+  DELETE_GROUP_FAIL: '[Groups list] Delete Group fail',
+  READ_GROUP_DIALOGS: '[Group dialog] Read Group dialogs',
+  READ_GROUP_DIALOGS_SUCCESS: '[Group dialog] Read Group dialogs success',
+  READ_GROUP_DIALOGS_FAIL: '[Group dialog] Read Group dialogs fail',
+  UPDATE_GROUP_DIALOG: '[Group dialog] Update Group dialog',
+  UPDATE_GROUP_DIALOG_SUCCESS: '[Group dialog] Update Group dialog success',
+  UPDATE_GROUP_DIALOG_FAIL: '[Group dialog] Update Group dialog fail',
+  APPEND_MESSAGE: '[Group dialog] Append message',
+  APPEND_MESSAGE_SUCCESS: '[Group dialog] Append message success',
+  APPEND_MESSAGE_FAIL: '[Group dialog] Append message fail'
 };

@@ -8,8 +8,20 @@ export interface GroupItemModel<T = { S: string }> {
   name: T;
   createdAt: T;
   createdBy: T;
+  dialogs: DialogsGroupModel | null;
 }
 
 export type NewGroupResponseModel = {
   groupID: string;
 };
+
+export interface DialogsGroupModel {
+  Count: number;
+  Items: DialogItemModel[];
+}
+
+export interface DialogItemModel<T = { S: string }> {
+  authorID: T;
+  message: T;
+  createdAt: T;
+}

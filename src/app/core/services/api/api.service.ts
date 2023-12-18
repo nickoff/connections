@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { GroupListModel, NewGroupResponseModel, PeopleListModel } from 'src/app/shared/models';
+import { DialogsGroupModel, GroupListModel, NewGroupResponseModel, PeopleListModel } from 'src/app/shared/models';
 import { ConversationsListModel } from 'src/app/shared/models/conversations-list.model';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
@@ -109,5 +109,25 @@ export class ApiService {
         return throwError(() => peopleException);
       })
     );
+  }
+
+  readGroupDialogs(groupId: string): Observable<DialogsGroupModel> {
+    return this.http.get<DialogsGroupModel>(API_ENDPOINT.GROUPS_READ, { params: { groupID: groupId } }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
+      })
+    );
+  }
+
+  updateGroupDialogs(groupId: string, dateLastMessage: number): Observable<DialogsGroupModel> {
+    return this.http
+      .get<DialogsGroupModel>(API_ENDPOINT.GROUPS_READ, { params: { groupID: groupId, since: dateLastMessage } })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          const peopleException: ServerException = error.error;
+          return throwError(() => peopleException);
+        })
+      );
   }
 }

@@ -44,7 +44,8 @@ export class GroupsEffect {
               id: { S: newGroupId.groupID },
               name: { S: action.newGroupName },
               createdAt: { S: new Date().getTime().toString() },
-              createdBy: { S: myUid }
+              createdBy: { S: myUid },
+              dialogs: null
             };
             return GROUPS_ACTIONS.createGroupSuccess({ newGroup });
           }),
@@ -67,6 +68,23 @@ export class GroupsEffect {
           }),
           catchError((error) => {
             return of(GROUPS_ACTIONS.deleteGroupFail({ error }));
+          })
+        )
+      )
+    );
+  });
+
+  feachGroupDialogs$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GROUPS_ACTIONS.readeGroupDialogs),
+      switchMap((action) =>
+        this.apiService.readGroupDialogs(action.groupID).pipe(
+          map((dialogs) => {
+            this.okSnackbar.openSnackbar('Group dialogs loaded');
+            return GROUPS_ACTIONS.readeGroupDialogsSuccess({ groupID: action.groupID, dialogs });
+          }),
+          catchError((error) => {
+            return of(GROUPS_ACTIONS.readeGroupDialogsFail({ error }));
           })
         )
       )

@@ -23,5 +23,16 @@ export const groupsApiReducer = createReducer<GroupsStateModel>(
     }
     return state;
   }),
-  on(GROUPS_ACTIONS.deleteGroupFail, (state): GroupsStateModel => state)
+  on(GROUPS_ACTIONS.deleteGroupFail, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.readeGroupDialogs, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.readeGroupDialogsSuccess, (state, { groupID, dialogs }): GroupsStateModel => {
+    if (state) {
+      return {
+        ...state,
+        Items: state.Items.map((i) => (i.id.S === groupID ? { ...i, dialogs } : { ...i, dialogs: null }))
+      };
+    }
+    return state;
+  }),
+  on(GROUPS_ACTIONS.readeGroupDialogsFail, (state): GroupsStateModel => state)
 );

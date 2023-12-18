@@ -14,8 +14,10 @@
     </div>
   </div>
   <cdk-virtual-scroll-viewport itemSize="50" class="group__messages-viewport">
-    <div class="message__item" >
-
+    <div *ngFor="let dialog of groupDialogs$ | async" class="message-item" [ngClass]="{'my-message': dialog.authorID.S === myUid}">
+      <p class="message-item__date">{{dialog.createdAt.S | date:'short'}}</p>
+      <p>{{dialog.authorID.S === myUid ? 'Me' : dialog.authorID.S }}</p>
+      <p>{{dialog.message.S}}</p>
     </div>
   </cdk-virtual-scroll-viewport>
   <div class="group__message-input">

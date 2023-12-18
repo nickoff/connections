@@ -10,8 +10,8 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
-import { GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
-import { GROUPS_ACTIONS, selectGroupByID, selectGroups } from 'src/app/store/groups';
+import { DialogItemModel, GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
+import { GROUPS_ACTIONS, selectGroupByID, selectGroupDialogsByID, selectGroups } from 'src/app/store/groups';
 import { PEOPLE_ACTIONS, selectPeople, selectPeopleByID } from 'src/app/store/people';
 
 import { ModalDeleteGroupComponent } from '../../components';
@@ -24,8 +24,10 @@ import { ModalDeleteGroupComponent } from '../../components';
   styleUrl: './group.component.scss'
 })
 export class GroupComponent implements OnInit {
+  pageLoad = false;
   groupsList$ = this.store.select(selectGroups);
   peopleList$ = this.store.select(selectPeople);
+  groupDialogs$?: Observable<DialogItemModel[]>;
   group$?: Observable<GroupItemModel>;
   groupOwner$?: Observable<PeopleItemModel>;
   myUid = localStorage.getItem('uid');
@@ -61,6 +63,13 @@ export class GroupComponent implements OnInit {
 
     this.route.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       const { id } = params;
+      this.groupDialogs$ = this.store.select(selectGroupDialogsByID(id)) as Observable<DialogItemModel[]>;
+      this.groupDialogs$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((dialogs) => {
+        if (dialogs.length === 0 && !this.pageLoad) {
+          this.store.dispatch(GROUPS_ACTIONS.readeGroupDialogs({ groupID: id }));
+        }
+        this.cdr.markForCheck();
+      });
       this.group$ = this.store.select(selectGroupByID(id)) as Observable<GroupItemModel>;
       this.group$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((group) => {
         if (group) {
@@ -68,6 +77,7 @@ export class GroupComponent implements OnInit {
         }
         this.cdr.markForCheck();
       });
+      this.pageLoad = true;
       this.cdr.markForCheck();
     });
   }
