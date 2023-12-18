@@ -11,6 +11,7 @@ import { filter, Observable, take } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
 import { DialogItemModel, GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
+import { UserIdToNamePipe } from 'src/app/shared/pipes/uid-to-name.pipe';
 import { GROUPS_ACTIONS, selectGroupByID, selectGroupDialogsByID, selectGroups } from 'src/app/store/groups';
 import { PEOPLE_ACTIONS, selectPeople, selectPeopleByID } from 'src/app/store/people';
 
@@ -19,7 +20,7 @@ import { ModalDeleteGroupComponent } from '../../components';
 @Component({
   selector: 'app-group',
   standalone: true,
-  imports: [CommonModule, ScrollingModule, MatInputModule, MatIconModule],
+  imports: [CommonModule, ScrollingModule, MatInputModule, MatIconModule, UserIdToNamePipe],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss'
 })
@@ -63,21 +64,22 @@ export class GroupComponent implements OnInit {
 
     this.route.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       const { id } = params;
-      this.groupDialogs$ = this.store.select(selectGroupDialogsByID(id)) as Observable<DialogItemModel[]>;
-      this.groupDialogs$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((dialogs) => {
-        if (dialogs.length === 0 && !this.pageLoad) {
-          this.store.dispatch(GROUPS_ACTIONS.readeGroupDialogs({ groupID: id }));
-        }
-        this.cdr.markForCheck();
-      });
+
       this.group$ = this.store.select(selectGroupByID(id)) as Observable<GroupItemModel>;
       this.group$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((group) => {
         if (group) {
           this.groupOwner$ = this.store.select(selectPeopleByID(group.createdBy.S)) as Observable<PeopleItemModel>;
+          this.groupDialogs$ = this.store.select(selectGroupDialogsByID(id)) as Observable<DialogItemModel[]>;
+          this.groupDialogs$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((dialogs) => {
+            if (dialogs.length === 0 && !group.lastUpdated && !this.pageLoad) {
+              this.store.dispatch(GROUPS_ACTIONS.readeGroupDialogs({ groupID: id }));
+            }
+            this.pageLoad = true;
+            this.cdr.markForCheck();
+          });
         }
         this.cdr.markForCheck();
       });
-      this.pageLoad = true;
       this.cdr.markForCheck();
     });
   }

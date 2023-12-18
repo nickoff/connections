@@ -13,3 +13,5 @@ export const selectPeople = createSelector(
 export const selectPeopleCount = createSelector(selectPeopleStore, (state) => state?.Count || 0);
 export const selectPeopleByID = (uid: string): MemoizedSelector<object, PeopleItemModel | undefined> =>
   createSelector(selectPeopleStore, (state) => state?.Items?.find((i) => i.uid.S === uid));
+export const selectPeopleNameByID = (uid: string): MemoizedSelector<object, string> =>
+  createSelector(selectPeopleStore, (state) => state?.Items?.find((i) => i.uid.S === uid)?.name.S || 'Unknown user');

@@ -45,7 +45,8 @@ export class GroupsEffect {
               name: { S: action.newGroupName },
               createdAt: { S: new Date().getTime().toString() },
               createdBy: { S: myUid },
-              dialogs: null
+              dialogs: null,
+              lastUpdated: null
             };
             return GROUPS_ACTIONS.createGroupSuccess({ newGroup });
           }),

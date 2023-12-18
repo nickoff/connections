@@ -9,6 +9,7 @@ export interface GroupItemModel<T = { S: string }> {
   createdAt: T;
   createdBy: T;
   dialogs: DialogsGroupModel | null;
+  lastUpdated: string | null;
 }
 
 export type NewGroupResponseModel = {

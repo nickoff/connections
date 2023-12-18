@@ -27,10 +27,8 @@ export const groupsApiReducer = createReducer<GroupsStateModel>(
   on(GROUPS_ACTIONS.readeGroupDialogs, (state): GroupsStateModel => state),
   on(GROUPS_ACTIONS.readeGroupDialogsSuccess, (state, { groupID, dialogs }): GroupsStateModel => {
     if (state) {
-      return {
-        ...state,
-        Items: state.Items.map((i) => (i.id.S === groupID ? { ...i, dialogs } : { ...i, dialogs: null }))
-      };
+      const lastUpdated = String(new Date().getTime());
+      return { ...state, Items: state.Items.map((i) => (i.id.S === groupID ? { ...i, dialogs, lastUpdated } : i)) };
     }
     return state;
   }),
