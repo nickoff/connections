@@ -21,9 +21,9 @@
     </div>
   </cdk-virtual-scroll-viewport>
   <div class="group__message-input">
-    <form>
-      <textarea placeholder="Enter your message" formControlName="message"></textarea>
-      <mat-icon class="group__send-button">send</mat-icon>
+    <form [formGroup]="messageForm">
+      <textarea placeholder="Enter your message" formControlName="message" formControlName="message"></textarea>
+      <button [disabled]="(isLoading$ | async)" type="button" class="group__send-button" (click)="handlerClickSendMessage()"><mat-icon class="group__icon-button">send</mat-icon></button>
     </form>
   </div>
 </div>

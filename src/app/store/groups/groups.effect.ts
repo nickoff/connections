@@ -108,4 +108,27 @@ export class GroupsEffect {
       )
     );
   });
+
+  appendMessage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GROUPS_ACTIONS.appendMessage),
+      switchMap((action) =>
+        this.apiService.appendMessageToGroupDialog(action.groupID, action.message).pipe(
+          map(() => {
+            const newDialog = {
+              message: { S: action.message },
+              createdAt: { S: new Date().getTime().toString() },
+              authorID: { S: localStorage.getItem('uid') || '' }
+            };
+
+            this.okSnackbar.openSnackbar('Message appended');
+            return GROUPS_ACTIONS.appendMessageSuccess({ groupID: action.groupID, newDialog });
+          }),
+          catchError((error) => {
+            return of(GROUPS_ACTIONS.appendMessageFail({ error }));
+          })
+        )
+      )
+    );
+  });
 }

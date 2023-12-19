@@ -130,4 +130,14 @@ export class ApiService {
         })
       );
   }
+
+  appendMessageToGroupDialog(groupId: string, text: string): Observable<null> {
+    return this.http.post(API_ENDPOINT.GROUPS_APPEND, { groupID: groupId, message: text }).pipe(
+      map(() => null),
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
+      })
+    );
+  }
 }

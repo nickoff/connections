@@ -55,5 +55,29 @@ export const groupsApiReducer = createReducer<GroupsStateModel>(
       };
     }
     return state;
+  }),
+  on(GROUPS_ACTIONS.appendMessage, (state): GroupsStateModel => state),
+  on(GROUPS_ACTIONS.appendMessageSuccess, (state, { groupID, newDialog }): GroupsStateModel => {
+    if (state) {
+      const lastUpdated = String(new Date().getTime());
+
+      return {
+        ...state,
+        Items: state.Items.map((i) =>
+          i.id.S === groupID
+            ? {
+                ...i,
+                dialogs: {
+                  ...i.dialogs,
+                  Count: (i.dialogs?.Count || 0) + 1,
+                  Items: [...(i.dialogs?.Items || []), newDialog]
+                },
+                lastUpdated
+              }
+            : i
+        )
+      };
+    }
+    return state;
   })
 );

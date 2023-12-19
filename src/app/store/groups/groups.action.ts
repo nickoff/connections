@@ -34,7 +34,7 @@ const updateGroupDialogFail = createAction(
 const appendMessage = createAction(GROUPS_ACTION.APPEND_MESSAGE, props<{ groupID: string; message: string }>());
 const appendMessageSuccess = createAction(
   GROUPS_ACTION.APPEND_MESSAGE_SUCCESS,
-  props<{ newMessage: DialogItemModel }>()
+  props<{ groupID: string; newDialog: DialogItemModel }>()
 );
 const appendMessageFail = createAction(GROUPS_ACTION.APPEND_MESSAGE_FAIL, props<{ error: HttpErrorResponse }>());
 

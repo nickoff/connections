@@ -2,6 +2,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -17,10 +18,14 @@ import { PEOPLE_ACTIONS, selectPeople, selectPeopleByID } from 'src/app/store/pe
 
 import { ModalDeleteGroupComponent } from '../../components';
 
+export interface MessageGroupFormModel {
+  message: FormControl<string>;
+}
+
 @Component({
   selector: 'app-group',
   standalone: true,
-  imports: [CommonModule, ScrollingModule, MatInputModule, MatIconModule, UserIdToNamePipe],
+  imports: [CommonModule, ScrollingModule, MatInputModule, MatIconModule, UserIdToNamePipe, ReactiveFormsModule],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss'
 })
@@ -36,6 +41,12 @@ export class GroupComponent implements OnInit {
   countdownSub$ = this.timer && this.timer.countdownStatus;
   disabledSub$ = this.timer && this.timer.disabledStatus;
   isLoading$ = this.loadingService.getLoading;
+
+  messageForm: FormGroup<MessageGroupFormModel> = new FormGroup({
+    message: new FormControl('', { nonNullable: true, validators: [Validators.required] })
+  });
+
+  message = this.messageForm.controls.message;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,19 +67,40 @@ export class GroupComponent implements OnInit {
     this.group$
       .pipe(
         take(1),
-        filter((group) => !!group?.id?.S)
+        filter((group) => !!group?.id?.S),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((group) => {
         this.deleteGroup('500ms', '300ms', group.id.S);
+        this.cdr.markForCheck();
       });
   }
 
-  updateMessage(): void {
+  handlerClickSendMessage(): void {
+    if (this.messageForm.invalid) return;
+
+    this.group$?.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((group) => {
+      if (!group?.id?.S || !this.messageForm.value.message) return;
+      this.store.dispatch(
+        GROUPS_ACTIONS.appendMessage({ groupID: group.id.S, message: this.messageForm.value.message })
+      );
+      this.messageForm.reset();
+      this.cdr.markForCheck();
+    });
+  }
+
+  starTimer(): void {
+    this.updateMessage();
+    this.timer && this.timer.startCountDown();
+  }
+
+  private updateMessage(): void {
     if (!this.group$) return;
     this.group$
       .pipe(
         take(1),
-        filter((group) => !!group?.id?.S)
+        filter((group) => !!group?.id?.S),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((group) => {
         if (group.lastUpdated) {
@@ -76,12 +108,8 @@ export class GroupComponent implements OnInit {
             GROUPS_ACTIONS.updateGroupDialog({ groupID: group.id.S, dateLastMessage: group.lastUpdated })
           );
         }
+        this.cdr.markForCheck();
       });
-  }
-
-  starTimer(): void {
-    this.updateMessage();
-    this.timer && this.timer.startCountDown();
   }
 
   private deleteGroup(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
