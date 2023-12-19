@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
-import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
 import { DialogItemModel, GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
 import { UserIdToNamePipe } from 'src/app/shared/pipes/uid-to-name.pipe';
@@ -58,8 +57,7 @@ export class GroupComponent implements OnInit {
     private timerService: TimerService,
     public dialog: MatDialog,
     private destroyRef: DestroyRef,
-    private cdr: ChangeDetectorRef,
-    private navigateService: NavigateService
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -163,8 +161,6 @@ export class GroupComponent implements OnInit {
             this.pageLoaded = true;
             this.cdr.markForCheck();
           });
-        } else {
-          this.navigateService.navigateToRoot();
         }
         this.cdr.markForCheck();
       });

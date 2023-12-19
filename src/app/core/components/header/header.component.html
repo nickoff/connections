@@ -1,9 +1,9 @@
 <header class="header">
-  <app-logo></app-logo>
+  <app-logo class="header__logo"></app-logo>
   <nav class="header__navigation">
     <a *ngFor="let item of navMenuList" [routerLink]="item.link" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
       <mat-icon>{{ item.icon }}</mat-icon>
-      {{ item.name }}
+      <span class="header__navigation-text">{{ item.name }}</span>
     </a>
   </nav>
 </header>
