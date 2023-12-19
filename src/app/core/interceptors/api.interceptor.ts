@@ -25,7 +25,11 @@ export const apiInterceptor: HttpInterceptorFn = (
     catchError((error: HttpErrorResponse) => {
       const serverException: ServerException = error.error;
       snackBar.openSnackbar(serverException.message);
-      if (serverException.type === 'InvalidTokenException' || serverException.type === 'InvalidIDException') {
+      if (
+        serverException.type === 'InvalidTokenException' ||
+        serverException.type === 'InvalidIDException' ||
+        serverException.type === 'InvalidUserDataException'
+      ) {
         userService.logout();
       }
       return throwError(() => serverException);
