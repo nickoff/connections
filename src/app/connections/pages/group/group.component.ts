@@ -8,9 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, Observable, take } from 'rxjs';
+import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
-import { TimerService } from 'src/app/core/services/timer/timer.service';
+import { CreateTimer, TimerService } from 'src/app/core/services/timer/timer.service';
 import { DialogItemModel, GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
 import { UserIdToNamePipe } from 'src/app/shared/pipes/uid-to-name.pipe';
 import { GROUPS_ACTIONS, selectGroupByID, selectGroupDialogsByID, selectGroups } from 'src/app/store/groups';
@@ -39,9 +39,9 @@ export class GroupComponent implements OnInit {
   group$?: Observable<GroupItemModel>;
   groupOwner$?: Observable<PeopleItemModel>;
   myUid = localStorage.getItem('uid');
-  private timer = this.timerService.createTimer('groupDialog');
-  countdownSub$ = this.timer && this.timer.countdownStatus;
-  disabledSub$ = this.timer && this.timer.disabledStatus;
+  private timer?: CreateTimer;
+  countdownSub$?: BehaviorSubject<number>;
+  disabledSub$?: BehaviorSubject<boolean>;
   isLoading$ = this.loadingService.getLoading;
 
   messageForm: FormGroup<MessageGroupFormModel> = new FormGroup({
@@ -147,7 +147,9 @@ export class GroupComponent implements OnInit {
 
     this.route.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       const { id } = params;
-
+      this.timer = this.timerService.createTimer(id);
+      this.countdownSub$ = this.timer && this.timer.countdownStatus;
+      this.disabledSub$ = this.timer && this.timer.disabledStatus;
       this.group$ = this.store.select(selectGroupByID(id)) as Observable<GroupItemModel>;
       this.group$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((group) => {
         if (group) {
