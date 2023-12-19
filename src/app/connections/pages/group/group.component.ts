@@ -32,6 +32,8 @@ export interface MessageGroupFormModel {
 })
 export class GroupComponent implements OnInit {
   pageLoaded = false;
+  groupsListLoaded = false;
+  peopleListLoaded = false;
   groupsList$ = this.store.select(selectGroups);
   peopleList$ = this.store.select(selectPeople);
   groupDialogs$?: Observable<DialogItemModel[]>;
@@ -126,18 +128,18 @@ export class GroupComponent implements OnInit {
 
   private initComponents(): void {
     this.groupsList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
-      if (groups.length === 0 && !this.pageLoaded) {
+      if (groups.length === 0 && !this.groupsListLoaded) {
         this.store.dispatch(GROUPS_ACTIONS.getGroups());
       }
-      this.pageLoaded = true;
+      this.groupsListLoaded = true;
       this.cdr.markForCheck();
     });
 
     this.peopleList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((people) => {
-      if (people.length === 0 && !this.pageLoaded) {
+      if (people.length === 0 && !this.peopleListLoaded) {
         this.store.dispatch(PEOPLE_ACTIONS.getPeople());
       }
-      this.pageLoaded = true;
+      this.peopleListLoaded = true;
       this.cdr.markForCheck();
     });
 

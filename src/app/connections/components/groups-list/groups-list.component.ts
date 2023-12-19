@@ -32,7 +32,7 @@ import { ModalDeleteGroupComponent } from '../modal-delete-group/modal-delete-gr
 })
 export class GroupsListComponent implements OnInit {
   private timer = this.timerService.createTimer('groupsList');
-  pageLoaded = false;
+  groupListLoaded = false;
   isLoading$ = this.loadingService.getLoading;
   groupsList$ = this.store.select(selectGroups);
   countdownSub$ = this.timer && this.timer.countdownStatus;
@@ -49,10 +49,10 @@ export class GroupsListComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.groupsList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
-      if (groups.length === 0 && !this.pageLoaded) {
+      if (groups.length === 0 && !this.groupListLoaded) {
         this.store.dispatch(GROUPS_ACTIONS.getGroups());
       }
-      this.pageLoaded = true;
+      this.groupListLoaded = true;
       this.cdr.markForCheck();
     });
   }

@@ -18,7 +18,7 @@ import { PEOPLE_ACTIONS, selectPeople } from 'src/app/store/people';
 })
 export class PeopleListComponent implements OnInit {
   private timer = this.timerService.createTimer('peopleList');
-  pageLoaded = false;
+  peopleListLoaded = false;
   isLoading$ = this.loadingService.getLoading;
   countdownSub$ = this.timer && this.timer.countdownStatus;
   disabledSub$ = this.timer && this.timer.disabledStatus;
@@ -34,10 +34,10 @@ export class PeopleListComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.peopleList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((people) => {
-      if (people.length === 0 && !this.pageLoaded) {
+      if (people.length === 0 && !this.peopleListLoaded) {
         this.store.dispatch(PEOPLE_ACTIONS.getPeople());
       }
-      this.pageLoaded = true;
+      this.peopleListLoaded = true;
       this.cdr.markForCheck();
     });
   }
