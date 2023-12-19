@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { SigninComponent } from './auth/pages/signin/signin.component';
+import { ConversationComponent } from './connections/pages/conversation/conversation.component';
 import { GroupComponent } from './connections/pages/group/group.component';
 import { PeopleAndGroupsComponent } from './connections/pages/people-and-groups/people-and-groups.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -24,6 +25,10 @@ export const routes: Routes = [
       {
         path: 'group/:id',
         component: GroupComponent
+      },
+      {
+        path: 'conversation/:id',
+        component: ConversationComponent
       }
     ]
   },

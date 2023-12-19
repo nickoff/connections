@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OkSnackbarService } from 'src/app/core/services/snackbar/ok-snackbar.service';
@@ -11,7 +12,8 @@ export class GroupsEffect {
   constructor(
     private actions$: Actions,
     private apiService: ApiService,
-    private okSnackbar: OkSnackbarService
+    private okSnackbar: OkSnackbarService,
+    private store: Store
   ) {}
 
   feachGroups$ = createEffect(() => {
@@ -123,6 +125,12 @@ export class GroupsEffect {
 
             this.okSnackbar.openSnackbar('Message appended');
             return GROUPS_ACTIONS.appendMessageSuccess({ groupID: action.groupID, newDialog });
+          }),
+          map(() => {
+            return GROUPS_ACTIONS.updateGroupDialog({
+              groupID: action.groupID,
+              dateLastMessage: String(Number(action.dateLastMessage))
+            });
           }),
           catchError((error) => {
             return of(GROUPS_ACTIONS.appendMessageFail({ error }));

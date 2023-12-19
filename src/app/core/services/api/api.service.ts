@@ -1,8 +1,14 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { DialogsGroupModel, GroupListModel, NewGroupResponseModel, PeopleListModel } from 'src/app/shared/models';
-import { ConversationsListModel } from 'src/app/shared/models/conversations-list.model';
+import {
+  ConversationResponseModel,
+  DialogsGroupModel,
+  GroupListModel,
+  NewGroupResponseModel,
+  PeopleListModel
+} from 'src/app/shared/models';
+import { ConversationItemModel, ConversationsListModel } from 'src/app/shared/models/conversations-list.model';
 import { SignupRequestModel } from 'src/app/shared/models/signup.model';
 import { NewNameModel, UserModel } from 'src/app/shared/models/user.model';
 
@@ -137,6 +143,61 @@ export class ApiService {
       catchError((error: HttpErrorResponse) => {
         const peopleException: ServerException = error.error;
         return throwError(() => peopleException);
+      })
+    );
+  }
+
+  createConversation(personID: string): Observable<ConversationResponseModel> {
+    return this.http.post<ConversationResponseModel>(API_ENDPOINT.CONVERSATIONS_CREATE, { companion: personID }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
+      })
+    );
+  }
+
+  readConversation(conversationId: string): Observable<ConversationItemModel> {
+    return this.http
+      .get<ConversationItemModel>(API_ENDPOINT.CONVERSATIONS_READ, { params: { conversationID: conversationId } })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          const peopleException: ServerException = error.error;
+          return throwError(() => peopleException);
+        })
+      );
+  }
+
+  updateConversation(conversationId: string, dateLastMessage: number): Observable<ConversationItemModel> {
+    return this.http
+      .get<ConversationItemModel>(API_ENDPOINT.CONVERSATIONS_READ, {
+        params: { conversationID: conversationId, since: dateLastMessage }
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          const peopleException: ServerException = error.error;
+          return throwError(() => peopleException);
+        })
+      );
+  }
+
+  appendMessageToConversation(conversationId: string, text: string): Observable<null> {
+    return this.http.post(API_ENDPOINT.CONVERSATIONS_APPEND, { conversationID: conversationId, message: text }).pipe(
+      map(() => null),
+      catchError((error: HttpErrorResponse) => {
+        const peopleException: ServerException = error.error;
+        return throwError(() => peopleException);
+      })
+    );
+  }
+
+  conversationGroup(id: string): Observable<null> {
+    const params = new HttpParams().set('conversationID', id);
+
+    return this.http.delete(API_ENDPOINT.CONVERSATIONS_DELETE, { params }).pipe(
+      map(() => null),
+      catchError((error: HttpErrorResponse) => {
+        const groupsException: ServerException = error.error;
+        return throwError(() => groupsException);
       })
     );
   }

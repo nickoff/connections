@@ -84,7 +84,11 @@ export class GroupComponent implements OnInit {
     this.group$?.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((group) => {
       if (!group?.id?.S || !this.messageForm.value.message) return;
       this.store.dispatch(
-        GROUPS_ACTIONS.appendMessage({ groupID: group.id.S, message: this.messageForm.value.message })
+        GROUPS_ACTIONS.appendMessage({
+          groupID: group.id.S,
+          message: this.messageForm.value.message,
+          dateLastMessage: group.lastUpdated || '0'
+        })
       );
       this.messageForm.reset();
       this.cdr.markForCheck();

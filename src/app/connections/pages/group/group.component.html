@@ -21,9 +21,9 @@
     </div>
   </cdk-virtual-scroll-viewport>
   <div class="group__message-input">
-    <form [formGroup]="messageForm">
+    <form [formGroup]="messageForm" (ngSubmit)="handlerClickSendMessage()">
       <textarea placeholder="Enter your message" formControlName="message" formControlName="message"></textarea>
-      <button [disabled]="(isLoading$ | async)" type="button" class="group__send-button" (click)="handlerClickSendMessage()"><mat-icon class="group__icon-button">send</mat-icon></button>
+      <button [disabled]="(isLoading$ | async)" class="group__send-button"><mat-icon class="group__icon-button">send</mat-icon></button>
     </form>
   </div>
 </div>
