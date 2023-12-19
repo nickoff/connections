@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading/loading.services';
+import { NavigateService } from 'src/app/core/services/navigate/navigate.service';
 import { TimerService } from 'src/app/core/services/timer/timer.service';
 import { DialogItemModel, GroupItemModel, PeopleItemModel } from 'src/app/shared/models';
 import { UserIdToNamePipe } from 'src/app/shared/pipes/uid-to-name.pipe';
@@ -30,7 +31,7 @@ export interface MessageGroupFormModel {
   styleUrl: './group.component.scss'
 })
 export class GroupComponent implements OnInit {
-  pageLoad = false;
+  pageLoaded = false;
   groupsList$ = this.store.select(selectGroups);
   peopleList$ = this.store.select(selectPeople);
   groupDialogs$?: Observable<DialogItemModel[]>;
@@ -55,7 +56,8 @@ export class GroupComponent implements OnInit {
     private timerService: TimerService,
     public dialog: MatDialog,
     private destroyRef: DestroyRef,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private navigateService: NavigateService
   ) {}
 
   ngOnInit(): void {
@@ -124,16 +126,18 @@ export class GroupComponent implements OnInit {
 
   private initComponents(): void {
     this.groupsList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((groups) => {
-      if (groups.length === 0) {
+      if (groups.length === 0 && !this.pageLoaded) {
         this.store.dispatch(GROUPS_ACTIONS.getGroups());
       }
+      this.pageLoaded = true;
       this.cdr.markForCheck();
     });
 
     this.peopleList$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((people) => {
-      if (people.length === 0) {
+      if (people.length === 0 && !this.pageLoaded) {
         this.store.dispatch(PEOPLE_ACTIONS.getPeople());
       }
+      this.pageLoaded = true;
       this.cdr.markForCheck();
     });
 
@@ -146,17 +150,19 @@ export class GroupComponent implements OnInit {
           this.groupOwner$ = this.store.select(selectPeopleByID(group.createdBy.S)) as Observable<PeopleItemModel>;
           this.groupDialogs$ = this.store.select(selectGroupDialogsByID(id)) as Observable<DialogItemModel[]>;
           this.groupDialogs$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((dialogs) => {
-            if (dialogs.length === 0 && !group.lastUpdated && !this.pageLoad) {
+            if (dialogs.length === 0 && !group.lastUpdated && !this.pageLoaded) {
               this.store.dispatch(GROUPS_ACTIONS.readGroupDialogs({ groupID: id }));
             }
-            if (group.lastUpdated && !this.pageLoad) {
+            if (group.lastUpdated && !this.pageLoaded) {
               this.store.dispatch(
                 GROUPS_ACTIONS.updateGroupDialog({ groupID: id, dateLastMessage: group.lastUpdated })
               );
             }
-            this.pageLoad = true;
+            this.pageLoaded = true;
             this.cdr.markForCheck();
           });
+        } else {
+          this.navigateService.navigateToRoot();
         }
         this.cdr.markForCheck();
       });
