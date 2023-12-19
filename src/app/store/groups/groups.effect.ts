@@ -117,16 +117,7 @@ export class GroupsEffect {
       switchMap((action) =>
         this.apiService.appendMessageToGroupDialog(action.groupID, action.message).pipe(
           map(() => {
-            const newDialog = {
-              message: { S: action.message },
-              createdAt: { S: new Date().getTime().toString() },
-              authorID: { S: localStorage.getItem('uid') || '' }
-            };
-
             this.okSnackbar.openSnackbar('Message appended');
-            return GROUPS_ACTIONS.appendMessageSuccess({ groupID: action.groupID, newDialog });
-          }),
-          map(() => {
             return GROUPS_ACTIONS.updateGroupDialog({
               groupID: action.groupID,
               dateLastMessage: String(Number(action.dateLastMessage))
